@@ -1,0 +1,19 @@
+
+<div class="baner">
+    <div class="logo-container"> <img src="assets/logo.png" alt="Logo"></div>
+    <h2 id="cc">Vendedor</h2>
+    <h1 id="c"> Punto de Venta </h1>
+ 
+    <form [formGroup]="loginForm" class="login-form">
+    <div class="form-container">
+        <label id="x">Cedula</label>
+        <input type="text" id="usuario" formControlName="usuario" placeholder="Ingrese su usuario" required>
+    
+        <label>Contraseña</label>
+        <input type="password" id="clavead" formControlName="clavead" placeholder="Ingrese su contraseña" required>
+    
+        <button type="button" class="btn btn-primary login-btn" (click)=" validarLoginAd()">Ingresar</button>
+    </div>
+</form>
+   
+</div>

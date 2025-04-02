@@ -10,8 +10,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "Venta")
-public class Venta {
+@Table(name = "detalleVenta")
+public class detalleVenta {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idVenta")
@@ -25,12 +25,12 @@ public class Venta {
 	 @JoinColumn(name = "idFactura", referencedColumnName = "idFactura")
 	    private  Factura Factura;
 
-	public Venta() {
+	public detalleVenta() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Venta(Long idVenta, com.example.demo.modelo.Producto producto, com.example.demo.modelo.Factura factura) {
+	public detalleVenta(Long idVenta, com.example.demo.modelo.Producto producto, com.example.demo.modelo.Factura factura) {
 		super();
 		this.idVenta = idVenta;
 		Producto = producto;
