@@ -23,6 +23,9 @@ public class VendedorControlador {
 	        return this.repositorio.findAll().stream()
 	            .anyMatch(admin -> admin.getCedulaV().equals(usuario1) 
 	                             && admin.getClave().equals(clavead1));
+	        
+	        
+	        
 	    }
 
 }
