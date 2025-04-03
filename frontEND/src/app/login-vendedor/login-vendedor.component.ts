@@ -47,4 +47,7 @@ validarLoginAd() {
 
   
 }
+admini(){
+  this.Router.navigate(['/loginAdmi'])
+}
 }

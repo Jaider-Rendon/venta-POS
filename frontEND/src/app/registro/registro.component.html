@@ -1,8 +1,8 @@
-<nav class="navbar navbar-expand-lg" style="background-color: #002244;">
+<nav class="navbar navbar-expand-lg" style="background-color: #00ff2a44">
     <div class="container-fluid">
       
-      <!-- Logo o título de la barra de navegación -->
-      <div class="logo-container"> <img src="assets/logo.png" alt="Logo"></div>
+      
+      <div class="logo-container"> <img src="assets/Logoo.png" alt="Logo"></div>
     </div>
   </nav>
   <div class="container mt-5">
@@ -11,49 +11,48 @@
   
       <form #clienteForm="ngForm">
         <div class="row g-3">
-          <!-- Documento de Identidad -->
+        
           <div class="col-md-6">
             <label class="form-label fw-semibold">Identificación</label>
             <input type="text" class="form-control shadow-sm rounded-3" [(ngModel)]="cliente.cedulaC" name="documento" pattern="[0-9]+" required />
           </div>
   
-          <!-- Primer Nombre -->
+        
           <div class="col-md-6">
             <label class="form-label fw-semibold">Primer Nombre</label>
             <input type="text" class="form-control shadow-sm rounded-3" [(ngModel)]="cliente.nombre1" name="nombre1" required />
           </div>
   
-          <!-- Segundo Nombre -->
           <div class="col-md-6">
             <label class="form-label fw-semibold">Segundo Nombre</label>
             <input type="text" class="form-control shadow-sm rounded-3" [(ngModel)]="cliente.nombre2" name="nombre2" />
           </div>
   
-          <!-- Primer Apellido -->
+  
           <div class="col-md-6">
             <label class="form-label fw-semibold">Primer Apellido</label>
             <input type="text" class="form-control shadow-sm rounded-3" [(ngModel)]="cliente.apellido1" name="apellido1" required />
           </div>
   
-          <!-- Segundo Apellido -->
+
           <div class="col-md-6">
             <label class="form-label fw-semibold">Segundo Apellido</label>
             <input type="text" class="form-control shadow-sm rounded-3" [(ngModel)]="cliente.apellido2" name="apellido2" />
           </div>
   
-          <!-- Teléfono -->
+      
           <div class="col-md-6">
             <label class="form-label fw-semibold">Teléfono</label>
             <input type="tel" class="form-control shadow-sm rounded-3" [(ngModel)]="cliente.telefono" name="telefono" pattern="[0-9]{10}" required />
           </div>
   
-          <!-- Dirección -->
+         
           <div class="col-md-6">
             <label class="form-label fw-semibold">Dirección</label>
             <input type="text" class="form-control shadow-sm rounded-3" [(ngModel)]="cliente.direccion" name="direccion" required />
           </div>
   
-          <!-- Correo Electrónico -->
+        
           <div class="col-md-6">
             <label class="form-label fw-semibold">Correo</label>
             <input type="email" class="form-control shadow-sm rounded-3" [(ngModel)]="cliente.correo" name="correo" required />
