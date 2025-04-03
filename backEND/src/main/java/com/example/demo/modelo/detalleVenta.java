@@ -24,17 +24,22 @@ public class detalleVenta {
 	@ManyToOne
 	 @JoinColumn(name = "idFactura", referencedColumnName = "idFactura")
 	    private  Factura Factura;
+	
+	 @Column(name = "total")
+	    private Long total;
 
 	public detalleVenta() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public detalleVenta(Long idVenta, com.example.demo.modelo.Producto producto, com.example.demo.modelo.Factura factura) {
+	public detalleVenta(Long idVenta, com.example.demo.modelo.Producto producto,
+			com.example.demo.modelo.Factura factura, Long total) {
 		super();
 		this.idVenta = idVenta;
 		Producto = producto;
 		Factura = factura;
+		this.total = total;
 	}
 
 	public Long getIdVenta() {
@@ -60,6 +65,13 @@ public class detalleVenta {
 	public void setFactura(Factura factura) {
 		Factura = factura;
 	}
-	
+
+	public Long getTotal() {
+		return total;
+	}
+
+	public void setTotal(Long total) {
+		this.total = total;
+	}
 
 }
