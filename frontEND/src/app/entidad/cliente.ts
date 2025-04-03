@@ -1,5 +1,5 @@
 export class Cliente {
-    cedulaC:string;
+    cedulaC:number;
     nombre1:string;
     nombre2:string;
     apellido1:string;

@@ -12,4 +12,19 @@
   
     </div>
   </nav>
+
+  <div class="row mb-4">
+    <div class="col-md-8 mx-auto">
+      <label class="form-label fw-bold">Número de cedula vendedor:</label>
+      <input type="text" class="form-control form-control-lg rounded-3 shadow-sm" [(ngModel)]="cedulaV" (blur)="vendedor()" required />
+    </div>
+    <div class="col-md-8 mx-auto">
+      <label class="form-label fw-bold">Número de cedula cliente:</label>
+      <input type="text" class="form-control form-control-lg rounded-3 shadow-sm" [(ngModel)]="CedulaC"(blur)="cliente()" required />
+    </div>
+  <div class="col-md-8 mx-auto">
+    <label class="form-label fw-bold">Id producto:</label>
+    <input type="text" class="form-control form-control-lg rounded-3 shadow-sm" [(ngModel)]="DetalleVenta.Producto" required />
+  </div>
+  </div>
   
