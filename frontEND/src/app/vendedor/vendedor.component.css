@@ -2,3 +2,11 @@
     width: 90px; 
     height: auto;
 }
+
+.center-button {
+    text-align: center;
+    margin-left: 35%;
+  }
+  h1{
+    text-align: center;
+  }

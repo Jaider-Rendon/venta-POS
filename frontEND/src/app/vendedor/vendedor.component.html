@@ -1,30 +1,103 @@
 <nav class="navbar navbar-expand-lg" style="background-color: #e7ebef">
-    <div class="container-fluid">
+  <div class="container-fluid">
+    <div class="logo-container">
+      <img src="assets/Logoo.png" alt="Logo">
+    </div>
+
+    <button class="btn text-light px-4 rounded-pill fw-semibold ms-auto" 
+            style="background-color: #495057; border: none; transition: 0.3s;"
+            (click)="Registro()">
+      <i class="bi bi-person-plus"></i> Registrarse
+    </button>
+  </div>
+</nav>
+
+ <H1>Facturacion</H1>
+<div class="container mt-4">
+  <div class="row row-cols-1 row-cols-md-2 mb-3">
+    <!-- Campo para la cédula del vendedor -->
+    <div class="col">
+      <div class="form-floating">
+        <input type="text" class="form-control shadow-sm" id="cedulaV" placeholder="Cédula del vendedor"
+               [(ngModel)]="cedulaV" (blur)="vendedor()" required />
+        <label for="cedulaV">Número de cédula del vendedor</label>
+      </div>
+    </div>
+
+    <!-- Selección del vendedor -->
+    <div class="col">
+      <div class="form-floating">
+        <select class="form-select shadow-sm" id="vendedor" [(ngModel)]="Factura.vendedor" name="vendedor">
+          <option *ngFor="let vendedor of Vendedores" [ngValue]="vendedor">
+            {{ vendedor.nombre }} - Cédula: {{ vendedor.cedulaV }}
+          </option>
+        </select>
+        <label for="vendedor">Seleccione vendedor</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="row row-cols-1 row-cols-md-2 mb-3">
+    <!-- Campo para la cédula del cliente -->
+    <div class="col">
+      <div class="form-floating">
+        <input type="text" class="form-control shadow-sm" id="cedulaC" placeholder="Cédula del cliente"
+               [(ngModel)]="CedulaC" (blur)="cliente()" required />
+        <label for="cedulaC">Número de cédula del cliente</label>
+      </div>
+    </div>
+
+    <!-- Selección del cliente -->
+    <div class="col">
+      <div class="form-floating">
+        <select class="form-select shadow-sm" id="cliente" [(ngModel)]="Factura.cliente" name="cliente" (change)="factura()">
+          <option *ngFor="let cliente of clientes" [ngValue]="cliente">
+            {{ cliente.nombre1 }} - Cédula: {{ cliente.cedulaC }}
+          </option>
+        </select>
+        <label for="cliente">Seleccione cliente</label>
+      </div>
+    </div>
+  </div>
+
+  <hr class="my-4" />
+
+  <!-- Sección de productos -->
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    <!-- Campo para el ID del producto -->
+    <div class="col">
+      <div class="form-floating">
+        <input type="text" class="form-control shadow-sm" id="productoId" placeholder="ID del producto"
+               [(ngModel)]="producto" (blur)="buscarProducto()" required />
+        <label for="productoId">ID del producto</label>
+      </div>
+    </div>
+
+    <!-- Selección del producto -->
+    <div class="col">
+      <div class="form-floating">
+        <select class="form-select shadow-sm" id="producto" [(ngModel)]="DetalleVenta.producto" name="producto" (change)="factura()">
+          <option *ngFor="let producto of productos" [ngValue]="producto">
+            {{ producto.idProducto }} - {{ producto.nombre }} - ${{ producto.precioCompra }}
+          </option>
+        </select>
+        <label for="producto">Seleccione producto</label>
+      </div>
+    </div>
+
+    <!-- Campo de cantidad -->
+    <div class="col">
+      <div class="form-floating">
+        <input type="number" class="form-control shadow-sm" id="cantidad" (change)="buscarFactura()" placeholder="Cantidad"
+               [(ngModel)]="DetalleVenta.cantidad" required min="1" />
+        <label for="cantidad">Cantidad</label>
+      </div>
       
-     
-      <div class="logo-container"> <img src="assets/Logoo.png" alt="Logo"></div>
-
-      <button class="btn text-light px-4 rounded-pill fw-semibold ms-auto" 
-              style="background-color: #495057; border: none; transition: 0.3s;"
-              (click)="Registro()">
-        <i class="bi bi-person-plus"></i> Registrarse
-      </button>
-  
-    </div>
-  </nav>
-
-  <div class="row mb-4">
-    <div class="col-md-8 mx-auto">
-      <label class="form-label fw-bold">Número de cedula vendedor:</label>
-      <input type="text" class="form-control form-control-lg rounded-3 shadow-sm" [(ngModel)]="cedulaV" (blur)="vendedor()" required />
-    </div>
-    <div class="col-md-8 mx-auto">
-      <label class="form-label fw-bold">Número de cedula cliente:</label>
-      <input type="text" class="form-control form-control-lg rounded-3 shadow-sm" [(ngModel)]="CedulaC"(blur)="cliente()" required />
-    </div>
-  <div class="col-md-8 mx-auto">
-    <label class="form-label fw-bold">Id producto:</label>
-    <input type="text" class="form-control form-control-lg rounded-3 shadow-sm" [(ngModel)]="DetalleVenta.Producto" required />
-  </div>
-  </div>
-  
+</div>
+<div class="center-button">
+  <button class="btn text-light px-4 rounded-pill fw-semibold" 
+          style="background-color: #495057; border: none; transition: 0.3s;"
+          (click)="detalleVenta()">
+    <i class="bi bi-person-plus"></i> Registrarse
+  </button>
+</div>

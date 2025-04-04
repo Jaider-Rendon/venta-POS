@@ -25,53 +25,73 @@ public class detalleVenta {
 	 @JoinColumn(name = "idFactura", referencedColumnName = "idFactura")
 	    private  Factura Factura;
 	
-	 @Column(name = "total")
-	    private Long total;
+	@Column(name="cantidad")
+	private Long cantidad;
+	
+
 
 	public detalleVenta() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
+
+
 	public detalleVenta(Long idVenta, com.example.demo.modelo.Producto producto,
-			com.example.demo.modelo.Factura factura, Long total) {
+			com.example.demo.modelo.Factura factura, Long cantidad) {
 		super();
 		this.idVenta = idVenta;
 		Producto = producto;
 		Factura = factura;
-		this.total = total;
+		this.cantidad = cantidad;
 	}
+
+
 
 	public Long getIdVenta() {
 		return idVenta;
 	}
 
+
+
 	public void setIdVenta(Long idVenta) {
 		this.idVenta = idVenta;
 	}
+
+
 
 	public Producto getProducto() {
 		return Producto;
 	}
 
+
+
 	public void setProducto(Producto producto) {
 		Producto = producto;
 	}
+
+
 
 	public Factura getFactura() {
 		return Factura;
 	}
 
+
+
 	public void setFactura(Factura factura) {
 		Factura = factura;
 	}
 
-	public Long getTotal() {
-		return total;
+
+
+	public Long getCantidad() {
+		return cantidad;
 	}
 
-	public void setTotal(Long total) {
-		this.total = total;
+
+
+	public void setCantidad(Long cantidad) {
+		this.cantidad = cantidad;
 	}
 
 }

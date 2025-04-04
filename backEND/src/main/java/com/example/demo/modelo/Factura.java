@@ -1,5 +1,7 @@
 package com.example.demo.modelo;
 
+
+
 import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -26,7 +28,7 @@ public class Factura {
 	
 	 @Temporal(TemporalType.DATE)
 	    @DateTimeFormat(pattern = "MM/dd/yyyy")
-	    @Column(name = "fechaFactura", nullable = false)
+	 @Column(name = "fechaFactura", nullable = false)
 	    private Date fechaFactura;
 	 
 	 @Column(name = "total")
@@ -94,6 +96,5 @@ public class Factura {
 	public void setVendedor(Vendedor vendedor) {
 		this.vendedor = vendedor;
 	}
-	 
 
 }
