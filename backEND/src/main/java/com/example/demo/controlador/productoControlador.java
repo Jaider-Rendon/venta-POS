@@ -9,25 +9,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.modelo.Cliente;
 
-import com.example.demo.repositorio.registroRepositorio;
-
-
+import com.example.demo.modelo.Producto;
+import com.example.demo.repositorio.productoRepositorio;
 
 @RestController
-@RequestMapping("/Cliente")
-@CrossOrigin(origins = "http://localhost:4200")
-public class clienteControlador {
-	@Autowired 
-	private registroRepositorio repositorio;
+@RequestMapping("/Producto")
+@CrossOrigin(origins = "http://localhost:4200") 
+
+
+public class productoControlador {
+
 	
-	 @GetMapping("/buscar1")
-	 public Optional<Cliente> vendedor(@RequestParam Long cedulaC) {	 
-		return this.repositorio.findById(cedulaC);
-		 
-	 }
-	 
-	 
+	@Autowired 
+	private productoRepositorio repositorio;
+	
+	@GetMapping("/buscar")
+	public Optional<Producto> vendedor(@RequestParam Long idPro) {  
+	    return this.repositorio.findById(idPro);
+	}
 
 }

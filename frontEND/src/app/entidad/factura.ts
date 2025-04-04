@@ -4,6 +4,7 @@ import { Cliente } from "./cliente";
 export class Factura {
     idFactura:number;
     fechaFactura:Date;
-    Cliente:Cliente;
-    Vendedor:Vendedor;
+    cliente: Cliente;  // ← Ahora coincide con Java
+    vendedor: Vendedor; // ← Ahora coincide con Java
+    total:number;
 }
