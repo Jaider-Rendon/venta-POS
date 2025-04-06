@@ -1,5 +1,7 @@
 package com.example.demo.modelo;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,8 +24,9 @@ public class detalleVenta {
 	    private  Producto Producto;
 	
 	@ManyToOne
-	 @JoinColumn(name = "idFactura", referencedColumnName = "idFactura")
-	    private  Factura Factura;
+	@JoinColumn(name = "factura_id")
+	@JsonBackReference
+	private Factura factura;
 	
 	@Column(name="cantidad")
 	private Long cantidad;
@@ -37,12 +40,11 @@ public class detalleVenta {
 
 
 
-	public detalleVenta(Long idVenta, com.example.demo.modelo.Producto producto,
-			com.example.demo.modelo.Factura factura, Long cantidad) {
+	public detalleVenta(Long idVenta, com.example.demo.modelo.Producto producto, Factura factura, Long cantidad) {
 		super();
 		this.idVenta = idVenta;
 		Producto = producto;
-		Factura = factura;
+		this.factura = factura;
 		this.cantidad = cantidad;
 	}
 
@@ -73,13 +75,13 @@ public class detalleVenta {
 
 
 	public Factura getFactura() {
-		return Factura;
+		return factura;
 	}
 
 
 
 	public void setFactura(Factura factura) {
-		Factura = factura;
+		this.factura = factura;
 	}
 
 
@@ -93,5 +95,7 @@ public class detalleVenta {
 	public void setCantidad(Long cantidad) {
 		this.cantidad = cantidad;
 	}
+
+
 
 }
