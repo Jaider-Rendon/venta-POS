@@ -1,5 +1,6 @@
 import { Vendedor } from './vendedor';
 import { Cliente } from "./cliente";
+import { DetalleVenta } from './detalle-venta';
 
 export class Factura {
     idFactura:number;

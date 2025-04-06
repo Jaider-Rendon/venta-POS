@@ -1,3 +1,4 @@
+import { FacturaCompleta } from './../entidad/factura-completa';
 import { FacturaService } from './../servicio/factura.service';
 import { Vendedor } from './../entidad/vendedor';
 import { DetalleVenta } from './../entidad/detalle-venta';
@@ -21,11 +22,15 @@ import { Producto } from '../entidad/producto';
 export class VendedorComponent {
 
   Factura: Factura = new Factura();
+  DetalleVentas: DetalleVenta[] = [];
+  // Nueva lista de productos agregados
+  
   DetalleVenta: DetalleVenta = new DetalleVenta();
 
   Vendedores: Vendedor[] = [];
   clientes: Cliente[] = [];
   productos: Producto[] = [];
+  FacturaCompleta:FacturaCompleta[]=[]
   cedulaV: number;
   CedulaC: number;
   producto: number;
@@ -37,6 +42,7 @@ export class VendedorComponent {
   ) {
     this.Factura.fechaFactura = new Date();
     this.Factura.total = 0;
+
   }
 
   Registro() {
@@ -69,22 +75,7 @@ export class VendedorComponent {
     );
   }
 
-  factura() {
-    this.FacturaService.crearFactura(this.Factura).subscribe(
-      dato => {
-        if (dato && dato.idFactura) {
-          this.Factura.idFactura = dato.idFactura;
-          console.log("Factura creada con ID:", this.Factura.idFactura);
-        } else {
-          console.error("No se recibió un ID de factura válido", dato);
-        }
-      },
-      error => {
-        console.error("Error al crear la factura", error);
-      }
-    );
-  }
-
+ 
   buscarProducto() {
     this.FacturaService.buscarProducto(this.producto).subscribe(
       dato => {
@@ -98,42 +89,41 @@ export class VendedorComponent {
     );
   }
 
-  buscarFactura() {
-    if (!this.Factura.idFactura) {
-      console.error("ID de factura es inválido o null");
-      return;
-    }
+  agregarProducto() {
+    const nuevoDetalle = new DetalleVenta();
+    nuevoDetalle.producto = this.DetalleVenta.producto;
+    nuevoDetalle.cantidad = this.DetalleVenta.cantidad;
+    nuevoDetalle.factura = this.Factura;
+  
+    this.DetalleVentas.push(nuevoDetalle);
+  
+    // Limpiar campos después de agregar
+    this.DetalleVenta = new DetalleVenta();
+  }
+  
 
-    this.FacturaService.buscarFactura(this.Factura.idFactura).subscribe(
-      dato => {
-        if (dato) {
-          this.DetalleVenta.factura = dato;
-          console.log("Factura encontrada:", dato);
-        } else {
-          console.warn("No se encontró la factura con ID:", this.Factura.idFactura);
+
+
+    crearFacturaCompleta() {
+      const facturaCompleta: FacturaCompleta = {
+        factura: this.Factura,
+        detalles: this.DetalleVentas
+      };
+    
+      this.FacturaService.crearFactura(facturaCompleta).subscribe(
+        (respuesta) => {
+          console.log('✅ Factura guardada:', respuesta);
+          alert('Factura guardada con éxito');
+    
+          // Resetear los datos después de guardar
+          this.Factura = new Factura();
+          this.DetalleVentas = [];
+        },
+        (error) => {
+          console.error('🚨 Error en la solicitud:', error);
+          alert('Hubo un error al guardar la factura.');
         }
-      },
-      error => {
-        console.error("Error al buscar la factura", error);
-      }
-    );
-  }
-
-  detalleVenta() {
-    if (!this.Factura.idFactura) {
-      console.error("No se puede crear el detalle de venta porque el ID de factura es inválido.");
-      return;
+      );
     }
-
-    this.DetalleVenta.factura = this.Factura;
-
-    this.FacturaService.detalleVenta(this.DetalleVenta).subscribe(
-      dato => {
-        console.log("Detalle de venta registrado:", dato);
-      },
-      error => {
-        console.error("Error al registrar el detalle de venta", error);
-      }
-    );
-  }
+    
 }
