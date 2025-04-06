@@ -21,9 +21,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.facturaCompleta;
 import com.example.demo.modelo.Factura;
+import com.example.demo.modelo.Producto;
 import com.example.demo.modelo.detalleVenta;
 import com.example.demo.repositorio.detalleVenta_Repositorio;
 import com.example.demo.repositorio.facturaRepositorio;
+import com.example.demo.repositorio.productoRepositorio;
 
 
 @RestController
@@ -37,6 +39,9 @@ public class facturaControlador {
 	
 	@Autowired 
 	private detalleVenta_Repositorio repositorioD;
+	
+	@Autowired 
+	private productoRepositorio repositorioP;
 
 
 	@PostMapping("/guardar")
@@ -47,11 +52,23 @@ public class facturaControlador {
 
 	        // 1. Calcular el total y construir los detalles
 	        for (detalleVenta detalleDTO : dto.getDetalles()) {
+	            Producto producto = detalleDTO.getProducto();
+
+	            // Validar stock disponible
+	            if (producto.getStock() < detalleDTO.getCantidad()) {
+	                return ResponseEntity.badRequest().body("Stock insuficiente para el producto: " + producto.getNombre());
+	            }
+
+	            // Actualizar stock del producto
+	            long nuevoStock = producto.getStock() - detalleDTO.getCantidad();
+	            producto.setStock(nuevoStock);
+	            repositorioP.save(producto); // Asegúrate de tener este repositorio inyectado
+
 	            detalleVenta detalle = new detalleVenta();
-	            detalle.setProducto(detalleDTO.getProducto());
+	            detalle.setProducto(producto);
 	            detalle.setCantidad(detalleDTO.getCantidad());
 
-	            float subtotal = detalleDTO.getProducto().getPrecioCompra() * detalleDTO.getCantidad();
+	            float subtotal = producto.getPrecioCompra() * detalleDTO.getCantidad();
 	            total += subtotal;
 
 	            detalles.add(detalle);
@@ -69,12 +86,12 @@ public class facturaControlador {
 	        repositorioD.saveAll(detalles);
 
 	        return ResponseEntity.ok(Map.of("mensaje", "Factura y detalles guardados correctamente"));
-
 	    } catch (Exception e) {
 	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 	                .body("Error al guardar la factura: " + e.getMessage());
 	    }
 	}
+
 
 	@GetMapping("/buscar")
 	public Optional<Factura> obtenerDetallesPorFactura(@RequestParam Long idF) {  

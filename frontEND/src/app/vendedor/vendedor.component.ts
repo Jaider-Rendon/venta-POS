@@ -100,16 +100,29 @@ export class VendedorComponent {
     // Limpiar campos después de agregar
     this.DetalleVenta = new DetalleVenta();
   }
-  
-
-
 
     crearFacturaCompleta() {
       const facturaCompleta: FacturaCompleta = {
         factura: this.Factura,
         detalles: this.DetalleVentas
       };
+  // Crear un resumen visual para el alert
+       const totalVisual = facturaCompleta.detalles.reduce((sum, d) => {
+        return sum + (d.producto?.precioCompra || 0) * (d.cantidad || 0);
+      }, 0);
+      const resumen = `
+    Factura:
+      Cliente: ${facturaCompleta.factura.cliente?.nombre1} - Cédula: ${facturaCompleta.factura.cliente?.cedulaC}
+      Vendedor: ${facturaCompleta.factura.vendedor?.nombre} - Cédula: ${facturaCompleta.factura.vendedor?.cedulaV}      Total: $${totalVisual.toFixed(2)}
     
+    Detalles:
+    ${facturaCompleta.detalles.map((d, i) => 
+      `  ${i + 1}. ${d.producto?.nombre} - Cantidad: ${d.cantidad} - Precio: $${d.producto?.precioCompra}`
+    ).join('\n')}
+      `;
+    alert(resumen);
+
+
       this.FacturaService.crearFactura(facturaCompleta).subscribe(
         (respuesta) => {
           console.log('✅ Factura guardada:', respuesta);
@@ -124,6 +137,5 @@ export class VendedorComponent {
           alert('Hubo un error al guardar la factura.');
         }
       );
-    }
-    
+    } 
 }
