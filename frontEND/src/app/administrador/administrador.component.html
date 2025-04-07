@@ -1,1 +1,28 @@
-<p>my boy my boy</p>
+<nav class="navbar navbar-expand-lg" style="background-color: #529dd676">
+  <div class="container-fluid">
+    <div class="logo-container">
+      <img id="rect" src="assets/Logoo.png" alt="Logo">
+    </div>
+  </div>
+</nav>
+
+<header class="header">
+  <div class="title-container">
+    <h2>Gestión de Impuestos</h2>
+  </div>
+</header>
+
+<main class="content">
+  <h1>Bienvenido, Administrador</h1>
+
+  <div class="formulario-reporte">
+    <label for="reporte">Seleccione un reporte:</label>
+    <select id="reporte" (change)="irAReporte($event)">
+      <option value="">-- Seleccione --</option>
+      <option value="ventas-diarias">Ventas Diarias</option>
+      <option value="ventas-mensuales">Ventas Mensuales</option>
+      <option value="reporte-productos">Productos por Tipo</option>
+      <option value="reporte-fechas">Ventas entre Fechas</option>
+    </select>
+  </div>
+</main>
