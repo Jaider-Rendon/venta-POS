@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
@@ -32,8 +33,7 @@ public class Factura {
     @Column(name = "idFactura")
     private Long idFactura;
 	
-	 @Temporal(TemporalType.DATE)
-	  @DateTimeFormat(pattern = "MM/dd/yyyy")
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	 @Column(name = "fechaFactura", nullable = false)
 	    private Date fechaFactura;
 	 
