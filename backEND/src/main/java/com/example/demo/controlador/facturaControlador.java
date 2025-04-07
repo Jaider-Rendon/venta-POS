@@ -1,9 +1,10 @@
 package com.example.demo.controlador;
 
 
-import java.time.LocalDateTime;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.facturaCompleta;
+import com.example.demo.dto.reporteDiario.VentaDiariaDTO;
 import com.example.demo.modelo.Factura;
 import com.example.demo.modelo.Producto;
 import com.example.demo.modelo.detalleVenta;
@@ -56,7 +58,7 @@ public class facturaControlador {
 
 	            // Validar stock disponible
 	            if (producto.getStock() < detalleDTO.getCantidad()) {
-	                return ResponseEntity.badRequest().body("Stock insuficiente para el producto: " + producto.getNombre());
+	                return ResponseEntity.badRequest().body("Stock insuficiente para el producto: " + producto.getNombre()+" Actualmente hay "+ producto.getStock());
 	            }
 
 	            // Actualizar stock del producto
@@ -96,6 +98,17 @@ public class facturaControlador {
 	@GetMapping("/buscar")
 	public Optional<Factura> obtenerDetallesPorFactura(@RequestParam Long idF) {  
 	    return this.repositorio.findById(idF);
+	}
+	
+	@GetMapping("/reporteDiarioV")
+	public ResponseEntity<List<Map<String, Object>>> reporteDiarioV(@RequestParam Long cedula, @RequestParam LocalDate fecha) {  
+	    List<Map<String, Object>> reporte = this.repositorio.findVentasPorDiaV(cedula, fecha);
+	    return ResponseEntity.ok(reporte);
+	}
+	@GetMapping("/reporteDiarioC")
+	public ResponseEntity<List<Map<String, Object>>> reporteDiarioC(@RequestParam Long cedula, @RequestParam LocalDate fecha) {  
+	    List<Map<String, Object>> reporte = this.repositorio.findVentasPorDiaC(cedula, fecha);
+	    return ResponseEntity.ok(reporte);
 	}
 }
 
