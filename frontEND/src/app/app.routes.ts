@@ -4,7 +4,7 @@ import { LoginVendedorComponent } from './login-vendedor/login-vendedor.componen
 import { RegistroComponent } from "./registro/registro.component";
 import { AdministradorComponent } from "./administrador/administrador.component";
 import { LoginAdmininComponent } from "./login-adminin/login-adminin.component";
-import { VentasDiariasComponent } from "./ventas-diarias/ventas-diarias.component";
+import { VentasDiariasComponent } from "./ventas-diariasV/ventas-diariasV.component";
 import { ProductosTipoComponent } from "./productos-tipo/productos-tipo.component";
 import { VentaFechasComponent } from "./venta-fechas/venta-fechas.component";
 import { VentasMensualesComponent } from "./ventas-mensuales/ventas-mensuales.component";
