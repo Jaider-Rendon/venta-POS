@@ -122,7 +122,6 @@ export class VendedorComponent {
       `;
     alert(resumen);
 
-
       this.FacturaService.crearFactura(facturaCompleta).subscribe(
         (respuesta) => {
           console.log('✅ Factura guardada:', respuesta);
