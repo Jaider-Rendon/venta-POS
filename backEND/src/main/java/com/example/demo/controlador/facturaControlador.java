@@ -1,11 +1,8 @@
 package com.example.demo.controlador;
 
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.dto.FacturaRespuesta;
 import com.example.demo.dto.facturaCompleta;
+
 import com.example.demo.modelo.Factura;
 import com.example.demo.modelo.Producto;
 import com.example.demo.modelo.detalleVenta;
@@ -54,15 +53,13 @@ public class facturaControlador {
 	        for (detalleVenta detalleDTO : dto.getDetalles()) {
 	            Producto producto = detalleDTO.getProducto();
 
-	            // Validar stock disponible
 	            if (producto.getStock() < detalleDTO.getCantidad()) {
 	                return ResponseEntity.badRequest().body("Stock insuficiente para el producto: " + producto.getNombre());
 	            }
 
-	            // Actualizar stock del producto
 	            long nuevoStock = producto.getStock() - detalleDTO.getCantidad();
 	            producto.setStock(nuevoStock);
-	            repositorioP.save(producto); // Asegúrate de tener este repositorio inyectado
+	            repositorioP.save(producto);
 
 	            detalleVenta detalle = new detalleVenta();
 	            detalle.setProducto(producto);
@@ -77,20 +74,30 @@ public class facturaControlador {
 	        // 2. Crear factura con el total
 	        Factura factura = dto.getFactura();
 	        factura.setTotal(total);
-	        factura = repositorio.save(factura);
+	        factura = repositorio.save(factura); // Aquí se genera el idFactura
 
-	        // 3. Asociar factura a cada detalle y guardar
+	        // 3. Asociar factura a los detalles y guardar
 	        for (detalleVenta detalle : detalles) {
 	            detalle.setFactura(factura);
 	        }
 	        repositorioD.saveAll(detalles);
 
-	        return ResponseEntity.ok(Map.of("mensaje", "Factura y detalles guardados correctamente"));
+	        // 4. Retornar la factura con su ID y los detalles
+	        FacturaRespuesta respuesta = new FacturaRespuesta();
+	        respuesta.setMensaje("Factura guardada exitosamente");
+	        respuesta.setFactura(factura);
+	        respuesta.setDetalles(detalles);
+
+	        return ResponseEntity.ok(respuesta);
+
+
+
 	    } catch (Exception e) {
 	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 	                .body("Error al guardar la factura: " + e.getMessage());
 	    }
 	}
+
 
 
 	@GetMapping("/buscar")
