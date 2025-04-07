@@ -4,6 +4,8 @@ import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -40,8 +42,7 @@ public class Producto {
 	 @Column(name = "tipo")
 		private String tipo;
 	 
-	 @Temporal(TemporalType.DATE)
-	    @DateTimeFormat(pattern = "MM/dd/yyyy")
+	 	@JsonFormat(pattern = "yyyy-MM-dd")
 	    @Column(name = "fechaVencimiento", nullable = false)
 	    private Date fechaVencimiento;
 	 
