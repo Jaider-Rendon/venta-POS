@@ -40,7 +40,7 @@ export class VendedorComponent {
     private vendedorService: LoginVendedorService,
     private FacturaService: FacturaService
   ) {
-    this.Factura.fechaFactura = new Date();
+   
     this.Factura.total = 0;
 
   }
@@ -102,9 +102,11 @@ export class VendedorComponent {
   }
 
     crearFacturaCompleta() {
+      this.Factura.fechaFactura = new Date()
       const facturaCompleta: FacturaCompleta = {
         factura: this.Factura,
-        detalles: this.DetalleVentas
+        detalles: this.DetalleVentas,
+
       };
   // Crear un resumen visual para el alert
        const totalVisual = facturaCompleta.detalles.reduce((sum, d) => {

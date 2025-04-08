@@ -1,0 +1,15 @@
+.logo-container img {
+    width: 90px; 
+    height: auto;
+}
+
+
+  .logo-container {
+    display: flex;
+    align-items: center;
+}
+.logo-container img {
+    width: 170px;
+    height: auto;
+    max-height: 120px; 
+}

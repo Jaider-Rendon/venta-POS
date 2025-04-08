@@ -1,0 +1,74 @@
+<nav class="navbar navbar-expand-lg" style="background-color: #529dd676">
+    <div class="container-fluid">
+      <div class="logo-container">
+        <img id="rect" src="assets/Logoo.png" alt="Logo">
+      </div>
+  
+      <button class="btn text-light px-4 rounded-pill fw-semibold ms-auto" 
+              style="background-color: #2e77ae; border: none; transition: 0.3s;"
+              (click)="Impuestos()">
+        <i class="bi bi-person-plus"></i> Gestion de impuestos
+      </button>
+    </div>
+
+  </nav>
+
+  <!-- CONTENIDO PRINCIPAL -->
+<div class="container mt-5">
+
+<!-- FILA DE INPUTS CENTRADOS -->
+<div class="row g-3 mb-4 justify-content-center align-items-end">
+  <!-- Input Cédula del Vendedor -->
+  <div class="col-md-3">
+    <div class="form-floating shadow-sm">
+      <input type="text" class="form-control rounded-3" id="cedulaV" placeholder="Cédula del cliente"
+             [(ngModel)]="cedulaC" required style="height: 58px;" />
+      <label for="cedulaV">Cédula del cliente</label>
+    </div>
+  </div>
+
+  <!-- Input Fecha -->
+  <div class="col-md-3">
+    <div class="form-floating shadow-sm">
+      <input type="date" class="form-control rounded-3" id="fecha" placeholder="Seleccione una fecha"
+             [(ngModel)]="fecha" required style="height: 58px;" />
+      <label for="fecha">Seleccione una fecha</label>
+    </div>
+  </div>
+  </div>
+
+  <!-- BOTONES -->
+  <div class="d-flex flex-wrap gap-3 justify-content-center mb-5">
+    <button class="btn btn-success px-4" (click)="reporteDiarioC()">Generar Reporte</button>
+  </div>
+
+
+  <!-- TABLA DE RESULTADOS -->
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped shadow-sm text-center align-middle">
+      <thead class="table-primary">
+        <tr>
+          <th>ID Factura</th>
+          <th>Vendedor</th>
+          <th>Cliente</th>
+          <th>Producto</th>
+          <th>Precio</th>
+          <th>Cantidad</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of ReporteDiarioC">
+          <td class="fw-bold">{{ item.id_factura }}</td>
+          <td>{{ item.nombre_vendedor }}</td>
+          <td>{{ item.nombre_cliente }}</td>
+          <td>{{ item.nombre_producto }}</td>
+          <td>{{ item.precio_compra }}</td>
+          <td>{{ item.cantidad }}</td>
+          <td>{{ item.total }}</td>
+          
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

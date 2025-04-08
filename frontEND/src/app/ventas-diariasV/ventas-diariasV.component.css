@@ -1,0 +1,22 @@
+.logo-container img {
+    width: 90px; 
+    height: auto;
+}
+
+.center-button {
+    text-align: center;
+    margin-left: 35%;
+  }
+  h1{
+    text-align: center;
+  }
+ 
+  .logo-container {
+    display: flex;
+    align-items: center;
+}
+.logo-container img {
+    width: 170px;
+    height: auto;
+    max-height: 120px; 
+}
