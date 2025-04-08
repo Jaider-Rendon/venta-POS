@@ -1,0 +1,83 @@
+/* Estilos generales */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f0f2f5;
+}
+
+/* Navbar */
+.navbar {
+  padding: 10px 20px;
+}
+
+.logo-container img {
+  height: 50px;
+}
+
+/* Header */
+.header {
+  color: rgb(0, 0, 0);
+  padding: 20px 0;
+  text-align: center;
+}
+
+.title-container h2 {
+  margin: 0;
+  font-size: 28px;
+}
+
+/* Contenido principal */
+.content {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.content h1 {
+  margin-bottom: 30px;
+  font-size: 32px;
+  color: #333;
+}
+
+/* Formulario de reporte */
+.formulario-reporte {
+  margin: 20px auto;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 300px;
+}
+
+.formulario-reporte label {
+  font-weight: bold;
+  margin-bottom: 10px;
+  font-size: 18px;
+  color: #444;
+  display: block;
+}
+
+.formulario-reporte select {
+  width: 100%;
+  padding: 10px 15px;
+  margin-top: 8px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  background-color: #f9f9f9;
+  transition: all 0.3s ease;
+}
+
+.formulario-reporte select:hover {
+  border-color: #529dd6;
+}
+
+.formulario-reporte select:focus {
+  outline: none;
+  border-color: #2e7cbf;
+  background-color: #fff;
+}
+
+/* Pequeñas transiciones suaves */
+select, label {
+  transition: all 0.3s ease;
+}

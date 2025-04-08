@@ -22,6 +22,13 @@ export class FacturaService {
   buscarProducto(idPro:number):Observable<any>{
     return this.httpClient.get(`http://localhost:8080/Producto/buscar?idPro=${idPro}`);
   }
+reporteDiario(cedulav:number,fecha:Date):Observable<any>{
+  return this.httpClient.get(`http://localhost:8080/Factura/reporteDiarioV?cedula=${cedulav}&fecha=${fecha}`);
 
+}
+reporteDiarioC(cedulav:number,fecha:Date):Observable<any>{
+  return this.httpClient.get(`http://localhost:8080/Factura/reporteDiarioC?cedula=${cedulav}&fecha=${fecha}`);
+
+}
 
 }

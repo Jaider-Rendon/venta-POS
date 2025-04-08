@@ -33,7 +33,7 @@ public class Factura {
     @Column(name = "idFactura")
     private Long idFactura;
 	
-	@JsonFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
 	 @Column(name = "fechaFactura", nullable = false)
 	    private Date fechaFactura;
 	 
