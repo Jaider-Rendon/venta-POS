@@ -124,4 +124,10 @@
         🛒 Guardar Factura Completa
       </button>
     </div>
+    <div class="d-grid mt-2" *ngIf="mostrarBotonDescarga">
+      <button class="btn btn-primary rounded-pill py-2 fw-semibold" (click)="generarPDF()">
+        📥 Descargar Factura
+      </button>
+    </div>
+    
 </div>

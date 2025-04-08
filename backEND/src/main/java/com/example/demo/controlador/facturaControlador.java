@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.dto.FacturaRespuesta;
 import com.example.demo.dto.facturaCompleta;
-
 import com.example.demo.modelo.Factura;
 import com.example.demo.modelo.Producto;
 import com.example.demo.modelo.detalleVenta;
@@ -33,78 +33,82 @@ import com.example.demo.repositorio.productoRepositorio;
 @CrossOrigin(origins = "http://localhost:4200")
 public class facturaControlador {
 
-	@Autowired 
-	private facturaRepositorio repositorio;
+    @Autowired 
+    private facturaRepositorio repositorio;
 
-	@Autowired 
-	private detalleVenta_Repositorio repositorioD;
+    @Autowired 
+    private detalleVenta_Repositorio repositorioD;
 
-	@Autowired 
-	private productoRepositorio repositorioP;
+    @Autowired 
+    private productoRepositorio repositorioP;
 
-	@PostMapping("/guardar")
-	public ResponseEntity<?> guardarFacturaCompleta(@RequestBody facturaCompleta dto) {
-	    try {
-	        float total = 0f;
-	        List<detalleVenta> detalles = new ArrayList<>();
+    @PostMapping("/guardar")
+    public ResponseEntity<?> guardarFacturaCompleta(@RequestBody facturaCompleta dto) {
+        try {
+            float total = 0f;
+            List<detalleVenta> detalles = new ArrayList<>();
 
-	        // 1. Calcular el total y construir los detalles
-	        for (detalleVenta detalleDTO : dto.getDetalles()) {
-	            Producto producto = detalleDTO.getProducto();
+            // 1. Calcular el total y construir los detalles
+            for (detalleVenta detalleDTO : dto.getDetalles()) {
+                Producto producto = detalleDTO.getProducto();
 
-	            // Validar stock disponible
-	            if (producto.getStock() < detalleDTO.getCantidad()) {
-	                return ResponseEntity.badRequest().body("Stock insuficiente para el producto: " + producto.getNombre() + " Actualmente hay " + producto.getStock());
-	            }
+                if (producto.getStock() < detalleDTO.getCantidad()) {
+                    return ResponseEntity.badRequest().body("Stock insuficiente para el producto: " + producto.getNombre() + " Actualmente hay " + producto.getStock());
+                }
 
-	            // Actualizar stock del producto
-	            long nuevoStock = producto.getStock() - detalleDTO.getCantidad();
-	            producto.setStock(nuevoStock);
-	            repositorioP.save(producto);
+                long nuevoStock = producto.getStock() - detalleDTO.getCantidad();
+                producto.setStock(nuevoStock);
+                repositorioP.save(producto);
 
-	            detalleVenta detalle = new detalleVenta();
-	            detalle.setProducto(producto);
-	            detalle.setCantidad(detalleDTO.getCantidad());
+                detalleVenta detalle = new detalleVenta();
+                detalle.setProducto(producto);
+                detalle.setCantidad(detalleDTO.getCantidad());
 
-	            float subtotal = producto.getPrecioCompra() * detalleDTO.getCantidad();
-	            total += subtotal;
+                float subtotal = producto.getPrecioCompra() * detalleDTO.getCantidad();
+                total += subtotal;
 
-	            detalles.add(detalle);
-	        }
+                detalles.add(detalle);
+            }
 
-	        // 2. Crear factura con el total
-	        Factura factura = dto.getFactura();
-	        factura.setTotal(total);
-	        factura = repositorio.save(factura);
+            // 2. Crear factura con el total
+            Factura factura = dto.getFactura();
+            factura.setTotal(total);
+            factura = repositorio.save(factura); // Aquí se genera el idFactura
 
-	        // 3. Asociar factura a cada detalle y guardar
-	        for (detalleVenta detalle : detalles) {
-	            detalle.setFactura(factura);
-	        }
-	        repositorioD.saveAll(detalles);
+            // 3. Asociar factura a los detalles y guardar
+            for (detalleVenta detalle : detalles) {
+                detalle.setFactura(factura);
+            }
+            repositorioD.saveAll(detalles);
 
-	        return ResponseEntity.ok(Map.of("mensaje", "Factura y detalles guardados correctamente"));
-	    } catch (Exception e) {
-	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-	                .body("Error al guardar la factura: " + e.getMessage());
-	    }
-	}
+            // 4. Retornar la factura con su ID y los detalles
+            FacturaRespuesta respuesta = new FacturaRespuesta();
+            respuesta.setMensaje("Factura guardada exitosamente");
+            respuesta.setFactura(factura);
+            respuesta.setDetalles(detalles);
 
-	@GetMapping("/buscar")
-	public Optional<Factura> obtenerDetallesPorFactura(@RequestParam Long idF) {  
-	    return this.repositorio.findById(idF);
-	}
+            return ResponseEntity.ok(respuesta);
 
-	@GetMapping("/reporteDiarioV")
-	public ResponseEntity<List<Map<String, Object>>> reporteDiarioV(@RequestParam Long cedula, @RequestParam LocalDate fecha) {  
-	    List<Map<String, Object>> reporte = this.repositorio.findVentasPorDiaV(cedula, fecha);
-	    return ResponseEntity.ok(reporte);
-	}
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al guardar la factura: " + e.getMessage());
+        }
+    }
 
-	@GetMapping("/reporteDiarioC")
-	public ResponseEntity<List<Map<String, Object>>> reporteDiarioC(@RequestParam Long cedula, @RequestParam LocalDate fecha) {  
-	    List<Map<String, Object>> reporte = this.repositorio.findVentasPorDiaC(cedula, fecha);
-	    return ResponseEntity.ok(reporte);
-	}
+    @GetMapping("/buscar")
+    public Optional<Factura> obtenerDetallesPorFactura(@RequestParam Long idF) {  
+        return this.repositorio.findById(idF);
+    }
+
+    @GetMapping("/reporteDiarioV")
+    public ResponseEntity<List<Map<String, Object>>> reporteDiarioV(@RequestParam Long cedula, @RequestParam LocalDate fecha) {  
+        List<Map<String, Object>> reporte = this.repositorio.findVentasPorDiaV(cedula, fecha);
+        return ResponseEntity.ok(reporte);
+    }
+
+    @GetMapping("/reporteDiarioC")
+    public ResponseEntity<List<Map<String, Object>>> reporteDiarioC(@RequestParam Long cedula, @RequestParam LocalDate fecha) {  
+        List<Map<String, Object>> reporte = this.repositorio.findVentasPorDiaC(cedula, fecha);
+        return ResponseEntity.ok(reporte);
+    }
 }
-

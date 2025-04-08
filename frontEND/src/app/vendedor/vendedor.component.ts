@@ -11,38 +11,38 @@ import { Router } from '@angular/router';
 import { LoginVendedorService } from '../servicio/login-vendedor.service';
 import { Cliente } from '../entidad/cliente';
 import { Producto } from '../entidad/producto';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 @Component({
   selector: 'app-vendedor',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './vendedor.component.html',
-  styleUrl: './vendedor.component.css'
+  styleUrls: ['./vendedor.component.css']
 })
 export class VendedorComponent {
 
   Factura: Factura = new Factura();
   DetalleVentas: DetalleVenta[] = [];
-  // Nueva lista de productos agregados
-  
   DetalleVenta: DetalleVenta = new DetalleVenta();
 
   Vendedores: Vendedor[] = [];
   clientes: Cliente[] = [];
   productos: Producto[] = [];
-  FacturaCompleta:FacturaCompleta[]=[]
+  FacturaCompleta: FacturaCompleta[] = [];
+
   cedulaV: number;
   CedulaC: number;
   producto: number;
+  mostrarBotonDescarga: boolean = false;
 
   constructor(
     private router: Router,
     private vendedorService: LoginVendedorService,
     private FacturaService: FacturaService
   ) {
-   
     this.Factura.total = 0;
-
   }
 
   Registro() {
@@ -75,7 +75,6 @@ export class VendedorComponent {
     );
   }
 
- 
   buscarProducto() {
     this.FacturaService.buscarProducto(this.producto).subscribe(
       dato => {
@@ -94,49 +93,71 @@ export class VendedorComponent {
     nuevoDetalle.producto = this.DetalleVenta.producto;
     nuevoDetalle.cantidad = this.DetalleVenta.cantidad;
     nuevoDetalle.factura = this.Factura;
-  
+
     this.DetalleVentas.push(nuevoDetalle);
-  
+
     // Limpiar campos después de agregar
     this.DetalleVenta = new DetalleVenta();
   }
 
-    crearFacturaCompleta() {
-      this.Factura.fechaFactura = new Date()
-      const facturaCompleta: FacturaCompleta = {
-        factura: this.Factura,
-        detalles: this.DetalleVentas,
-
-      };
-  // Crear un resumen visual para el alert
-       const totalVisual = facturaCompleta.detalles.reduce((sum, d) => {
-        return sum + (d.producto?.precioCompra || 0) * (d.cantidad || 0);
-      }, 0);
-      const resumen = `
-    Factura:
-      Cliente: ${facturaCompleta.factura.cliente?.nombre1} - Cédula: ${facturaCompleta.factura.cliente?.cedulaC}
-      Vendedor: ${facturaCompleta.factura.vendedor?.nombre} - Cédula: ${facturaCompleta.factura.vendedor?.cedulaV}      Total: $${totalVisual.toFixed(2)}
+  crearFacturaCompleta() {
+    this.Factura.fechaFactura = new Date();
     
-    Detalles:
-    ${facturaCompleta.detalles.map((d, i) => 
-      `  ${i + 1}. ${d.producto?.nombre} - Cantidad: ${d.cantidad} - Precio: $${d.producto?.precioCompra}`
-    ).join('\n')}
-      `;
+    const facturaCompleta: FacturaCompleta = {
+      factura: this.Factura,
+      detalles: this.DetalleVentas
+    };
+
+    // Crear un resumen visual para el alert
+    const totalVisual = facturaCompleta.detalles.reduce((sum, d) => {
+      return sum + (d.producto?.precioCompra || 0) * (d.cantidad || 0);
+    }, 0);
+
+    const resumen = `
+Factura:
+  Cliente: ${facturaCompleta.factura.cliente?.nombre1} - Cédula: ${facturaCompleta.factura.cliente?.cedulaC}
+  Vendedor: ${facturaCompleta.factura.vendedor?.nombre} - Cédula: ${facturaCompleta.factura.vendedor?.cedulaV}
+  Total: $${totalVisual.toFixed(2)}
+
+Detalles:
+${facturaCompleta.detalles.map((d, i) => 
+  `  ${i + 1}. ${d.producto?.nombre} - Cantidad: ${d.cantidad} - Precio Unitario: $${d.producto?.precioCompra}`
+).join('\n')}
+    `;
+
     alert(resumen);
 
-      this.FacturaService.crearFactura(facturaCompleta).subscribe(
-        (respuesta) => {
-          console.log('✅ Factura guardada:', respuesta);
-          alert('Factura guardada con éxito');
-    
-          // Resetear los datos después de guardar
-          this.Factura = new Factura();
-          this.DetalleVentas = [];
-        },
-        (error) => {
-          console.error('🚨 Error en la solicitud:', error);
-          alert('Hubo un error al guardar la factura.');
-        }
-      );
-    } 
+    this.FacturaCompleta.push(facturaCompleta);
+    this.mostrarBotonDescarga = true;
+  }
+
+  descargarFactura() {
+    if (this.FacturaCompleta.length === 0) return;
+
+    const facturaCompleta = this.FacturaCompleta[this.FacturaCompleta.length - 1];
+
+    const doc = new jsPDF();
+
+    doc.text('Factura', 14, 20);
+    doc.text(`Cliente: ${facturaCompleta.factura.cliente?.nombre1} - Cédula: ${facturaCompleta.factura.cliente?.cedulaC}`, 14, 30);
+    doc.text(`Vendedor: ${facturaCompleta.factura.vendedor?.nombre} - Cédula: ${facturaCompleta.factura.vendedor?.cedulaV}`, 14, 40);
+
+    autoTable(doc, {
+      startY: 50,
+      head: [['Producto', 'Cantidad', 'Precio Unitario']],
+      body: facturaCompleta.detalles.map(d => [
+        d.producto?.nombre || '',
+        d.cantidad?.toString() || '',
+        `$${d.producto?.precioCompra?.toFixed(2) || '0.00'}`
+      ])
+    });
+
+    const total = facturaCompleta.detalles.reduce((sum, d) => {
+      return sum + (d.producto?.precioCompra || 0) * (d.cantidad || 0);
+    }, 0);
+
+    doc.text(`Total: $${total.toFixed(2)}`, 14, doc.lastAutoTable.finalY + 10);
+
+    doc.save('factura.pdf');
+  }
 }
