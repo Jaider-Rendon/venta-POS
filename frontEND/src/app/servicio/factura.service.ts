@@ -23,5 +23,9 @@ reporteDiario(cedulav:number,fecha:Date):Observable<any>{
   return this.httpClient.get(`http://localhost:8080/Factura/reporteDiarioV?cedula=${cedulav}&fecha=${fecha}`);
 
 }
+reporteDiarioC(cedulav:number,fecha:Date):Observable<any>{
+  return this.httpClient.get(`http://localhost:8080/Factura/reporteDiarioC?cedula=${cedulav}&fecha=${fecha}`);
+
+}
 
 }

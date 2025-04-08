@@ -26,11 +26,15 @@ export class VentasDiariasComponent {
   Impuestos() {
     this.router.navigate(['/gestionImpuestos']);
   }
+  reporteDiarioC() {
+    this.router.navigate(['/ventas-diariasC']);
+  }
   reporteDiarioV(){
     this.FacturaService.reporteDiario(this.cedulaV,this.fecha).subscribe(
       dato => {
         this.ReporteDiario=dato;
         console.log(dato);
+        this.ReporteDiario.sort((a, b) => a.id_factura - b.id_factura);
 
       }
     )}

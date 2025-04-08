@@ -9,4 +9,5 @@ export class ReporteDiario {
     nombre_producto:string;
     id_factura:number;
     total:number;
-}
+    nombre_cliente:string;
+}

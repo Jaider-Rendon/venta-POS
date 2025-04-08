@@ -21,9 +21,9 @@
   <!-- Input Cédula del Vendedor -->
   <div class="col-md-3">
     <div class="form-floating shadow-sm">
-      <input type="text" class="form-control rounded-3" id="cedulaV" placeholder="Cédula del vendedor"
-             [(ngModel)]="cedulaV" required style="height: 58px;" />
-      <label for="cedulaV">Cédula del vendedor</label>
+      <input type="text" class="form-control rounded-3" id="cedulaV" placeholder="Cédula del cliente"
+             [(ngModel)]="cedulaC" required style="height: 58px;" />
+      <label for="cedulaV">Cédula del cliente</label>
     </div>
   </div>
 
@@ -39,12 +39,10 @@
 
   <!-- BOTONES -->
   <div class="d-flex flex-wrap gap-3 justify-content-center mb-5">
-    <button class="btn btn-success px-4" (click)="reporteDiarioV()">Generar Reporte</button>
+    <button class="btn btn-success px-4" (click)="reporteDiarioC()">Generar Reporte</button>
   </div>
 
-  <div class="d-flex flex-wrap gap-3 justify-content-center mb-5">
-    <button class="btn btn-danger px-4" (click)="reporteDiarioC()">Reportes de Cliente</button>
-  </div>
+
   <!-- TABLA DE RESULTADOS -->
   <div class="table-responsive">
     <table class="table table-bordered table-striped shadow-sm text-center align-middle">
@@ -60,7 +58,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of ReporteDiario">
+        <tr *ngFor="let item of ReporteDiarioC">
           <td class="fw-bold">{{ item.id_factura }}</td>
           <td>{{ item.nombre_vendedor }}</td>
           <td>{{ item.nombre_cliente }}</td>
@@ -68,6 +66,7 @@
           <td>{{ item.precio_compra }}</td>
           <td>{{ item.cantidad }}</td>
           <td>{{ item.total }}</td>
+          
         </tr>
       </tbody>
     </table>
