@@ -1,0 +1,38 @@
+.logo-container img {
+    width: 90px; 
+    height: auto;
+}
+
+
+  .logo-container {
+    display: flex;
+    align-items: center;
+}
+.logo-container img {
+    width: 170px;
+    height: auto;
+    max-height: 120px; 
+}
+.boton-volver {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%; /* redondo */
+    background-color: #28a745; /* color verde de Bootstrap */
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* sombrita elegante */
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  
+  .boton-volver i {
+    font-size: 1.5rem; /* tamaño de la flecha */
+    color: white;
+  }
+  
+  .boton-volver:hover {
+    background-color: #218838; /* un verde más oscuro al pasar el mouse */
+    transform: scale(1.1); /* hace un pequeño zoom */
+  }
+  

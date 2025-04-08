@@ -35,4 +35,7 @@ export class AdministradorComponent {
       }
     }
   }
+  Impuestos() {
+    this.router.navigate(['/gestionImpuestos']);
+  }
 }
