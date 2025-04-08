@@ -1,4 +1,5 @@
 <nav class="navbar navbar-expand-lg" style="background-color: #529dd676">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <div class="container-fluid">
       <div class="logo-container">
         <img id="rect" src="assets/Logoo.png" alt="Logo">
@@ -7,11 +8,19 @@
       <button class="btn text-light px-4 rounded-pill fw-semibold ms-auto" 
               style="background-color: #2e77ae; border: none; transition: 0.3s;"
               (click)="Impuestos()">
-        <i class="bi bi-person-plus"></i> Gestion de impuestos
+        <i></i> Gestion de impuestos
       </button>
     </div>
 
   </nav>
+
+  <div class="d-flex ps-5 mb-4">
+    <button class="btn text-light px-4 rounded-pill fw-semibold" 
+            style="background-color: #2e77ae; border: none;"
+            (click)="Volver()">
+      <i class="bi bi-arrow-left"></i> Volver
+    </button>
+  </div>
 
   <!-- CONTENIDO PRINCIPAL -->
 <div class="container mt-5">
@@ -39,7 +48,8 @@
 
   <!-- BOTONES -->
   <div class="d-flex flex-wrap gap-3 justify-content-center mb-5">
-    <button class="btn btn-success px-4" (click)="reporteDiarioC()">Generar Reporte</button>
+    <button class="btn btn-success px-4" (click)="reporteDiarioC()">
+      <i class="bi bi-file-earmark-bar-graph-fill"></i>Generar Reporte</button>
   </div>
 
 

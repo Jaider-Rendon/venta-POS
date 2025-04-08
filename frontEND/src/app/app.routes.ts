@@ -10,6 +10,7 @@ import { VentaFechasComponent } from "./venta-fechas/venta-fechas.component";
 import { VentasMensualesComponent } from "./ventas-mensuales/ventas-mensuales.component";
 import { GestionImpuestosComponent } from "./gestion-impuestos/gestion-impuestos.component";
 import { VentasDiariasCComponent } from "./ventas-diarias-c/ventas-diarias-c.component";
+import { VentasMensualesCComponent } from "./ventas-mensuales-c/ventas-mensuales-c.component";
 
 export const routes: Routes = [
     { path: '', redirectTo: 'loginvendedor', pathMatch: 'full' }, 
@@ -23,5 +24,7 @@ export const routes: Routes = [
     {path:'productosTipo',component:ProductosTipoComponent},
     {path:'ventaFechas',component:VentaFechasComponent},
     {path:'ventas-mensuales',component:VentasMensualesComponent},
-    {path:'gestionImpuestos',component:GestionImpuestosComponent}
+    {path:'ventas-mensualesC',component:VentasMensualesCComponent},
+    {path:'gestionImpuestos',component:GestionImpuestosComponent},
+
 ];

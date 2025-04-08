@@ -34,5 +34,10 @@
   .boton-volver:hover {
     background-color: #218838; /* un verde más oscuro al pasar el mouse */
     transform: scale(1.1); /* hace un pequeño zoom */
+    margin-top: 20px;
+  }
+  
+  .btn {
+    margin-top: 20px;
   }
   

@@ -20,3 +20,10 @@
     height: auto;
     max-height: 120px; 
 }
+/* ventas-mensuales.component.css */
+table th, table td {
+  vertical-align: middle;
+}
+.btn {
+  margin-top: 20px;
+}
