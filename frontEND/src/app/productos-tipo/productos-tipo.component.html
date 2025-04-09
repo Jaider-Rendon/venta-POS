@@ -31,7 +31,7 @@
           <input type="text" id="tipoProducto" [(ngModel)]="tipoProducto" placeholder="Ingrese tipo" class="form-control my-2">
           
           <button (click)="generarReporte()" class="btn btn-success rounded-pill mt-3 w-100">
-            <i class="bi bi-file-earmark-bar-graph-fill"></i> Buscar Generar reporte
+            <i class="bi bi-file-earmark-bar-graph-fill"></i> Generar reporte
           </button>
           
         </div>
@@ -46,9 +46,9 @@
           <tr>
             <th>ID de producto</th>
             <th>Nombre de producto</th>
-            <th>Valor total en stock</th>
+            <th>Valor unitario</th>
             <th>Cantidad vendida</th> <!-- Nueva columna -->
-            <th>Valor total vendido</th> <!-- Nueva columna -->
+            <th>Valor de venta</th> <!-- Nueva columna -->
           </tr>
         </thead>
         <tbody>

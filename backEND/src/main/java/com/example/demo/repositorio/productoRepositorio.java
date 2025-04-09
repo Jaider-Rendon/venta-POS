@@ -23,13 +23,13 @@ public interface productoRepositorio extends JpaRepository<Producto, Long> {
 
 
  
-    @Query(value = "SELECT P.id_producto AS id_producto, P.nombre AS nombre_producto, P.stock AS cantidad, " +
-                   "P.precio_compra AS precio_compra, I.nombre AS nombre_impuesto, I.porcentaje AS porcentaje " +
-                   "FROM producto P " +
-                   "JOIN asignar_impuesto A ON P.id_producto = A.id_producto " +
-                   "JOIN impuesto I ON A.id_impuesto = I.id_impuesto " +
-                   "WHERE P.id_producto = :id " +
-                   "LIMIT 1", 
-           nativeQuery = true)
-    Map<String, Object> findByIdC(@Param("id") Long id);
+    	@Query(value = "SELECT P.id_producto AS id_producto, P.nombre AS nombre_producto, P.stock AS cantidad, " +
+                "P.precio_compra AS precio_compra, I.nombre AS nombre_impuesto, I.porcentaje AS porcentaje " +
+                "FROM producto P " +
+                "JOIN asignar_impuesto A ON P.id_producto = A.id_producto " +
+                "JOIN impuesto I ON A.id_impuesto = I.id_impuesto " +
+                "WHERE P.tipo = :id",
+        nativeQuery = true)
+ List<Map<String, Object>> findByIdC(@Param("id") String id);
+
 }

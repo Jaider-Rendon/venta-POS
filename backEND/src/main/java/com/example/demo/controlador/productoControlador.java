@@ -37,10 +37,18 @@ public class productoControlador {
     @Autowired 
     private impuestoRepositorio repositorioIm;
 	
-    @GetMapping("/buscar")
-    public Map<String, Object> vendedor(@RequestParam Long id) {  
+    @GetMapping("/buscarC")
+    public List<Map<String, Object>> buscar(@RequestParam String id) {
         return this.repositorio.findByIdC(id);
     }
+
+    
+    @GetMapping("/buscar")
+    public Optional<Producto> buscarProducto(@RequestParam Long idPro) {
+        return this.repositorio.findById(idPro);
+    }
+
+    
     @GetMapping("/buscarPorTipo")
     public List<Map<String, Object>> buscarPorTipo(@RequestParam String tipo) {
         System.out.println("Buscando productos por tipo: " + tipo);
@@ -73,26 +81,36 @@ public class productoControlador {
     }
 
 
-
-
-
     @GetMapping("/gestionarImpuestos")
-    public boolean gestionarImpuestos(@RequestParam Long idProducto, 
+    public boolean gestionarImpuestos(@RequestParam String tipo,
                                       @RequestParam Long nuevoImpuesto) {
+
         List<AsignarImpuesto> asignaciones = repositorioI.findAll();
         boolean cambio = false;
 
         for (AsignarImpuesto asignacion : asignaciones) {
-            if (asignacion.getProducto().getIdProducto().equals(idProducto)) {
-            	Impuesto impuesto = asignacion.getImpuesto(); // obtener impuesto actual
-                impuesto.setClaveporcentaje(nuevoImpuesto); // cambiar el valor del impuesto
-                this.repositorioIm.save(impuesto); // guardar el cambio
+            if (asignacion.getProducto().getTipo().equalsIgnoreCase(tipo.toLowerCase())) {
+                // Actualizar el impuesto
+                Impuesto impuesto = asignacion.getImpuesto();
+                impuesto.setClaveporcentaje(nuevoImpuesto);
+                repositorioIm.save(impuesto);
+
+                // Calcular nuevo precio de compra con impuesto
+                Producto producto = asignacion.getProducto();
+                Float precioBase = producto.getPrecioUnitario();
+                Float impuestoDecimal = nuevoImpuesto.floatValue() / 100;
+                Float precioConImpuesto = precioBase + (precioBase * impuestoDecimal);
+
+                // Actualizar y guardar el nuevo precio
+                producto.setPrecioCompra(precioConImpuesto);
+                repositorio.save(producto); // Asegúrate de tener este repositorio
                 cambio = true;
             }
         }
 
         return cambio;
     }
+
 
     
 
