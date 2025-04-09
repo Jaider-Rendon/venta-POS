@@ -6,6 +6,7 @@ import { Factura } from './../entidad/factura';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { ReporteDiarioC } from '../entidad/reporte-diario-c';
 
 @Injectable({
   providedIn: 'root'
@@ -38,4 +39,21 @@ reporteMensualC(cedulav:number,fecha:string):Observable<any>{
   return this.httpClient.get(`http://localhost:8080/Factura/reporteMensualC?cedula=${cedulav}&fecha=${fecha}`);
 
 }
+
+reporteEntreFechas(fechaInicio: Date, fechaFin: Date): Observable<any> {
+  const inicioStr = fechaInicio.toISOString().split('T')[0]; // yyyy-MM-dd
+  const finStr = fechaFin.toISOString().split('T')[0];
+
+  return this.httpClient.get(`http://localhost:8080/Factura/reporteEntreFechas`, {
+    params: {
+      inicio: inicioStr,
+      fin: finStr
+    }
+  });
+}
+
+
+
+
+
 }

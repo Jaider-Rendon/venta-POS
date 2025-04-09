@@ -67,5 +67,18 @@ List<Map<String, Object>> findVentasPorDiaC(@Param("cedula") Long cedula, @Param
             "WHERE f.cedulac = :cedula AND DATE_FORMAT(f.fecha_factura, '%Y-%m') = :fecha",
     nativeQuery = true)
 	List<Map<String, Object>> findVentasMensualesC(Long cedula, String fecha);
+	
+	@Query(value = "SELECT f.id_factura, c.nombre1 AS nombre_cliente, f.cedulac, " +
+	        "v.nombre AS nombre_vendedor, v.cedulav, p.nombre AS nombre_producto, " +
+	        "d.cantidad, p.precio_compra, f.total, f.fecha_factura " +
+	        "FROM factura f " +
+	        "JOIN detalle_venta d ON f.id_factura = d.factura_id " +
+	        "JOIN producto p ON d.id_producto = p.id_producto " +
+	        "JOIN cliente c ON f.cedulac = c.cedulac " +
+	        "JOIN vendedor v ON f.cedulav = v.cedulav " +
+	        "WHERE f.fecha_factura BETWEEN :fechaInicio AND :fechaFin",
+	        nativeQuery = true)
+	List<Map<String, Object>> findVentasEntreFechas(@Param("fechaInicio") Date fechaInicio, @Param("fechaFin") Date fechaFin);
+
 
 }
