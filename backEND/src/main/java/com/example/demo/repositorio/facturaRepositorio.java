@@ -15,9 +15,6 @@ import com.example.demo.modelo.Factura;
 @Repository
 public interface facturaRepositorio extends JpaRepository<Factura,Long> {
 
-	
-
-
 	@Query(value = "SELECT f.id_factura, c.nombre1 AS nombre_cliente, f.cedulac, " +
             "v.nombre AS nombre_vendedor, v.cedulav, p.nombre AS nombre_producto, " +
             "d.cantidad, p.precio_compra, f.total " +
