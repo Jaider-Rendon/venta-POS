@@ -36,17 +36,32 @@ export class LoginAdmininComponent implements OnInit {
     }
   
     const { usuario, clavead } = this.loginForm.value;
+  
+    // Validar que el usuario (cédula) sea solo números
+    const soloNumeros = /^[0-9]+$/;
+    if (!soloNumeros.test(usuario)) {
+      alert('El campo de cédula solo debe contener números.');
+      return;
+    }
+  
+    // Validar que la contraseña no tenga caracteres inválidos
+    const caracteresValidos = /^[A-Za-z0-9@#%&¡!$*_\-]+$/;
+    if (!caracteresValidos.test(clavead)) {
+      alert('La contraseña contiene caracteres inválidos.');
+      return;
+    }
+  
+    // Si pasa las validaciones, intentar el login
     this.LoginAdministradorService.login(usuario, clavead).subscribe(dato => {
       console.log(dato);
       if (dato === true) {
-        console.log("genial")
-          this.Router.navigate(['/Administrador']);
-      }else {
-        alert("Datos incorrectos"); 
+        console.log("genial");
+        this.Router.navigate(['/Administrador']);
+      } else {
+        alert("credenciales invalidas"); 
       }
     });
-  
-    
   }
+  
 
 }

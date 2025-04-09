@@ -32,13 +32,43 @@ export class VentasDiariasComponent {
   reporteDiarioC() {
     this.router.navigate(['/ventas-diariasC']);
   }
-  reporteDiarioV(){
-    this.FacturaService.reporteDiario(this.cedulaV,this.fecha).subscribe(
+  reporteDiarioV() {
+    
+    if (!/^\d+$/.test(this.cedulaV?.toString())) {
+      alert('La cédula debe contener solo números.');
+      return;
+    }
+  
+    if (!this.fecha) {
+      alert('Por favor seleccione una fecha.');
+      return;
+    }
+  
+    
+    this.FacturaService.reporteDiario(this.cedulaV, this.fecha).subscribe(
       dato => {
-        this.ReporteDiario=dato;
+        this.ReporteDiario = dato;
         console.log(dato);
+  
+        if (this.ReporteDiario.length === 0) {
+          alert('No se encontraron ventas para la fecha seleccionada.');
+          return;
+        }
+  
+        const vendedorEncontrado = this.ReporteDiario.some(item => item.nombre_vendedor);
+        if (!vendedorEncontrado) {
+          alert('La cédula no corresponde a ningún vendedor.');
+          return;
+        }
+  
+      
         this.ReporteDiario.sort((a, b) => a.id_factura - b.id_factura);
-
+      },
+      error => {
+        console.error(error);
+        alert('Error al consultar el reporte. Intente nuevamente.');
       }
-    )}
+    );
+  }
+  
 }

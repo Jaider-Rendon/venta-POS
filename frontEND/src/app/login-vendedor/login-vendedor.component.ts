@@ -35,18 +35,39 @@ validarLoginAd() {
   }
 
   const { usuario, clavead } = this.loginForm.value;
-  this.LoginVendedorService.login(usuario, clavead).subscribe(dato => {
-    console.log(dato);
-    if (dato === true) {
-      console.log("genial")
-        this.Router.navigate(['/Vendedor']);
-    }else {
-      alert("Datos incorrectos"); 
-    }
-  });
 
-  
+  // Validar que usuario (cédula) solo tenga números
+  const cedulaRegex = /^[0-9]+$/;
+  if (!cedulaRegex.test(usuario)) {
+    alert('La cédula solo debe contener números.');
+    return;
+  }
+
+  // Validar que clave (contraseña) solo tenga letras y números
+  const passwordRegex = /^[A-Za-z0-9]+$/;
+  if (!passwordRegex.test(clavead)) {
+    alert('La contraseña contiene caracteres inválidos.');
+    return;
+  }
+
+  // Ahora sí, hacer la llamada al servicio
+  this.LoginVendedorService.login(usuario, clavead).subscribe(
+    dato => {
+      console.log(dato);
+      if (dato === true) {
+        console.log("¡Genial! Usuario autenticado.");
+        this.Router.navigate(['/Vendedor']);
+      } else {
+        alert("credenciales invalidas");
+      }
+    },
+    error => {
+      console.error('Error al intentar iniciar sesión:', error);
+      alert('Error en el servidor. Inténtalo más tarde.');
+    }
+  );
 }
+
 admini(){
   this.Router.navigate(['/loginAdmi'])
 }
