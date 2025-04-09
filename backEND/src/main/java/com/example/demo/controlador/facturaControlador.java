@@ -126,8 +126,8 @@ public class facturaControlador {
     
     @GetMapping("/reporteEntreFechas")
     public ResponseEntity<List<Map<String, Object>>> reporteEntreFechas(
-            @RequestParam("inicio") @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE) Date inicio,
-            @RequestParam("fin") @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE) Date fin) {
+    		@RequestParam LocalDate inicio,
+    		@RequestParam LocalDate fin) {
 
         List<Map<String, Object>> reporte = this.repositorio.findVentasEntreFechas(inicio, fin);
         return ResponseEntity.ok(reporte);
