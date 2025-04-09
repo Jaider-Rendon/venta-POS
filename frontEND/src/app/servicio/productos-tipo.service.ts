@@ -17,6 +17,11 @@ export class ProductosTipoService {
     return this.http.get<Producto[]>(`${this.baseUrl}/buscarPorTipo?tipo=${tipo}`);
 }
 
+buscarProductosPorTipo1(tipo: string): Observable<any[]> {
+  return this.http.get<any[]>(`${this.baseUrl}/buscarPorTipo?tipo=${tipo}`);
+}
+
+
 buscarProducto(id:number): Observable<ProductoI> {
   return this.http.get<ProductoI>(`${this.baseUrl}/buscar?id=${id}`);
 }

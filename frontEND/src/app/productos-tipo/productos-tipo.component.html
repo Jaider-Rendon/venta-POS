@@ -46,18 +46,21 @@
           <tr>
             <th>ID de producto</th>
             <th>Nombre de producto</th>
-            <th>Cantidad</th>
-            <th>Valor total</th>
+            <th>Valor total en stock</th>
+            <th>Cantidad vendida</th> <!-- Nueva columna -->
+            <th>Valor total vendido</th> <!-- Nueva columna -->
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let producto of productos">
             <td>{{ producto.idProducto }}</td>
-            <td>{{ producto.nombre }}</td>
-            <td>{{ producto.stock }}</td>
-            <td>{{ producto.precioCompra }}</td>
+            <td>{{ producto.nombreProducto}}</td>
+            <td>{{ producto.precioUnitario }}</td>
+            <td>{{ producto.cantidadVendida }}</td> <!-- Nuevo dato -->
+            <td>{{ producto.totalGenerado }}</td> <!-- Nuevo dato -->
           </tr>
         </tbody>
       </table>
+      
   </div>
   

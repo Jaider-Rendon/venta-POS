@@ -11,6 +11,5 @@ import com.example.demo.modelo.detalleVenta;
 public interface detalleVenta_Repositorio extends JpaRepository<detalleVenta,Long> {
 
 
-
 }
 

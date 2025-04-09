@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common'; // Para *ngIf y *ngFor
 import { FormsModule } from '@angular/forms';   // Para [(ngModel)]
 
 import { Router } from '@angular/router';
+import { log } from 'console';
 
 @Component({
   selector: 'app-productos-tipo',
@@ -30,9 +31,10 @@ export class ProductosTipoComponent {
         return; // sale de la función si hay números
       }
 
-      this.ProductosTipoService.buscarProductosPorTipo(this.tipoProducto)
+      this.ProductosTipoService.buscarProductosPorTipo1(this.tipoProducto)
         .subscribe((data: any[]) => {
           this.productos = data;
+          console.log(data)
 
           if (this.productos.length === 0) {
             alert('No hay productos para este tipo');
