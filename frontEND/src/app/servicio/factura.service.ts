@@ -19,8 +19,8 @@ export class FacturaService {
     return this.httpClient.post<FacturaRespuesta>(`${this.bdURl}`, FacturaCompleta);
   }
   
-  buscarProducto(idPro:number):Observable<any>{
-    return this.httpClient.get(`http://localhost:8080/Producto/buscar?idPro=${idPro}`);
+  buscarProducto(idPro:number,nombre:string):Observable<any>{
+    return this.httpClient.get(`http://localhost:8080/Producto/buscar?idPro=${idPro}&nombre=${nombre}`);
   }
 reporteDiario(cedulav:number,fecha:Date):Observable<any>{
   return this.httpClient.get(`http://localhost:8080/Factura/reporteDiarioV?cedula=${cedulav}&fecha=${fecha}`);

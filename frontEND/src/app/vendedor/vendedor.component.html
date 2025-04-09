@@ -62,36 +62,52 @@
 
     <hr>
 
-    <!-- PRODUCTOS -->
-    <h5 class="fw-semibold mb-3">🛒 Agregar productos</h5>
-    <div class="row row-cols-1 row-cols-md-3 g-3 mb-3">
-      <div class="col">
-        <div class="form-floating">
-          <input type="text" class="form-control shadow-sm" id="productoId" placeholder="ID del producto"
-                 [(ngModel)]="producto" (blur)="buscarProducto()" required />
-          <label for="productoId">ID del producto</label>
-        </div>
-      </div>
-
-      <div class="col">
-        <div class="form-floating">
-          <select class="form-select shadow-sm" id="producto" [(ngModel)]="DetalleVenta.producto">
-            <option *ngFor="let producto of productos" [ngValue]="producto">
-              {{ producto.idProducto }} - {{ producto.nombre }} - ${{ producto.precioCompra }}
-            </option>
-          </select>
-          <label for="producto">Seleccione producto</label>
-        </div>
-      </div>
-
-      <div class="col">
-        <div class="form-floating">
-          <input type="number" class="form-control shadow-sm" id="cantidad" placeholder="Cantidad"
-                 [(ngModel)]="DetalleVenta.cantidad" required min="1" />
-          <label for="cantidad">Cantidad</label>
-        </div>
-      </div>
+    <div class="text-center mb-4">
+      <h5 class="fw-semibold">🛒 Agregar productos</h5>
     </div>
+     
+      <div class="row g-3 mb-3">
+        <!-- ID del producto -->
+        <div class="col-md-6">
+          <div class="form-floating">
+            <input type="text" class="form-control shadow-sm" placeholder="ID del producto"
+                   [(ngModel)]="idProducto" (blur)="buscarProducto()" required />
+            <label>ID del producto</label>
+          </div>
+        </div>
+      
+        <!-- Nombre del producto -->
+        <div class="col-md-6">
+          <div class="form-floating">
+            <input type="text" class="form-control shadow-sm" placeholder="Nombre del producto"
+                   [(ngModel)]="nombrePro" (blur)="buscarProducto()" required />
+            <label>Nombre del producto</label>
+          </div>
+        </div>
+      
+        <!-- Selección del producto -->
+        <div class="col-md-6">
+          <div class="form-floating">
+            <select class="form-select shadow-sm" id="producto" [(ngModel)]="DetalleVenta.producto">
+              <option *ngFor="let producto of productos" [ngValue]="producto">
+                {{ producto?.idProducto }} - {{ producto?.nombre }} - ${{ producto?.precioCompra }}
+              </option>
+            </select>
+            <label for="producto">Seleccione producto</label>
+          </div>
+        </div>
+      
+        <!-- Cantidad -->
+        <div class="col-md-6">
+          <div class="form-floating">
+            <input type="number" class="form-control shadow-sm" id="cantidad" placeholder="Cantidad"
+                   [(ngModel)]="DetalleVenta.cantidad" required min="1" />
+            <label for="cantidad">Cantidad</label>
+          </div>
+        </div>
+      </div>
+      
+
 
     <div class="d-grid">
       <button class="btn btn-dark rounded-pill py-2" (click)="agregarProducto()">

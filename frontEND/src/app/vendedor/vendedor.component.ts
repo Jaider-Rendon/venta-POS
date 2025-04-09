@@ -35,7 +35,8 @@ export class VendedorComponent {
 
   cedulaV: number;
   CedulaC: number;
-  producto: number;
+  idProducto: number=0;
+  nombrePro:string;
   mostrarBotonDescarga: boolean = false;
 
   constructor(
@@ -77,7 +78,7 @@ export class VendedorComponent {
   }
 
   buscarProducto() {
-    this.FacturaService.buscarProducto(this.producto).subscribe(
+    this.FacturaService.buscarProducto(this.idProducto,this.nombrePro).subscribe(
       dato => {
         this.productos = Array.isArray(dato) ? dato : [dato];
         console.log("Productos encontrados:", this.productos);

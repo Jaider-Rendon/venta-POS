@@ -44,8 +44,9 @@ public class productoControlador {
 
     
     @GetMapping("/buscar")
-    public Optional<Producto> buscarProducto(@RequestParam Long idPro) {
-        return this.repositorio.findById(idPro);
+    public Optional<Producto> buscarProducto(@RequestParam(required = false) Long idPro,
+                                             @RequestParam(required = false) String nombre) {
+        return repositorio.findByIdN(idPro, nombre);
     }
 
     

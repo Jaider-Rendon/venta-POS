@@ -2,6 +2,7 @@ package com.example.demo.repositorio;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -31,5 +32,12 @@ public interface productoRepositorio extends JpaRepository<Producto, Long> {
                 "WHERE P.tipo = :id",
         nativeQuery = true)
  List<Map<String, Object>> findByIdC(@Param("id") String id);
+
+    	
+    	
+    	@Query(value = "SELECT * from producto P Where P.id_producto = :idPro OR P.nombre= :nombre", nativeQuery = true)
+    	Optional<Producto> findByIdN(@Param("idPro") Long idPro, @Param("nombre") String nombre);
+
+
 
 }
