@@ -111,4 +111,17 @@ public class facturaControlador {
         List<Map<String, Object>> reporte = this.repositorio.findVentasPorDiaC(cedula, fecha);
         return ResponseEntity.ok(reporte);
     }
+    
+    @GetMapping("/reporteMensualV")
+    public ResponseEntity<List<Map<String, Object>>> reporteMensualV(@RequestParam Long cedula, @RequestParam String fecha) {  
+        List<Map<String, Object>> reporte = this.repositorio.findVentasMensualesV(cedula, fecha);
+        return ResponseEntity.ok(reporte);
+    }
+    
+    @GetMapping("/reporteMensualC")
+    public ResponseEntity<List<Map<String, Object>>> reporteMensualC(@RequestParam Long cedula, @RequestParam String fecha) {  
+        List<Map<String, Object>> reporte = this.repositorio.findVentasMensualesC(cedula, fecha);
+        return ResponseEntity.ok(reporte);
+    }
+    
 }

@@ -2,13 +2,13 @@ import { ProductosTipoService } from './../servicio/productos-tipo.service';
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common'; // Para *ngIf y *ngFor
 import { FormsModule } from '@angular/forms';   // Para [(ngModel)]
-import { HttpClientModule } from '@angular/common/http'; // Para HttpClient
+
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-productos-tipo',
   standalone: true,
-  imports: [CommonModule, FormsModule, HttpClientModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './productos-tipo.component.html',
   styleUrls: ['./productos-tipo.component.css']
 })

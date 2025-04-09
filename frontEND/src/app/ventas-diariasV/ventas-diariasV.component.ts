@@ -26,6 +26,9 @@ export class VentasDiariasComponent {
   Impuestos() {
     this.router.navigate(['/gestionImpuestos']);
   }
+  Volver() {
+    this.router.navigate(['/Administrador']);
+  }
   reporteDiarioC() {
     this.router.navigate(['/ventas-diariasC']);
   }
