@@ -1,3 +1,4 @@
+import { DetalleVenta } from './detalle-venta';
 export class Producto {
     idProducto: number;
     nombre: string;
@@ -8,4 +9,5 @@ export class Producto {
     tipo: string;
     fechaVencimiento: Date;
     estado: string;  // Corregido
+    DetalleVenta:DetalleVenta
 }
