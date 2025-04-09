@@ -8,5 +8,6 @@ export class ReporteDiarioC {
     cedulav:number;
     nombre_producto:string;
     cantidad:number;
+    fecha_factura: string; // <-- AÑADIDO para mostrar la fecha de venta
 
 }
