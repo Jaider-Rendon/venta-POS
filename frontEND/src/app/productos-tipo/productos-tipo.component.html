@@ -1,5 +1,6 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg" style="background-color: #529dd676; position: relative;">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <div class="container-fluid">
      
       <div class="logo-container ms-5">
@@ -9,14 +10,16 @@
       <button class="btn text-light px-4 rounded-pill fw-semibold ms-auto"
               style="background-color: #2e77ae; border: none; transition: 0.3s;"
               (click)="Impuestos()">
-        <i class="bi bi-person-plus"></i> Gestión de impuestos
+        <i></i> Gestión de impuestos
       </button>
     </div>
   </nav>
 
-  <div class="container mt-3">
-    <button class="btn btn-success rounded-pill" (click)="volver()">
-      <i class="bi bi-arrow-left"></i> Volver
+  <div class="d-flex ps-5 mb-4">
+    <button class="btn text-light px-4 rounded-pill fw-semibold" 
+            style="background-color: #2e77ae; border: none;"
+            (click)="volver()">
+      <i class="bi bi-house-fill"></i> Volver
     </button>
   </div>
   
@@ -28,8 +31,9 @@
           <input type="text" id="tipoProducto" [(ngModel)]="tipoProducto" placeholder="Ingrese tipo" class="form-control my-2">
           
           <button (click)="generarReporte()" class="btn btn-success rounded-pill mt-3 w-100">
-            Generar reporte
+            <i class="bi bi-file-earmark-bar-graph-fill"></i> Buscar Generar reporte
           </button>
+          
         </div>
       </div>
       <div>

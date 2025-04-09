@@ -8,7 +8,7 @@
       <button class="btn text-light px-4 rounded-pill fw-semibold ms-auto" 
               style="background-color: #2e77ae; border: none; transition: 0.3s;"
               (click)="Impuestos()">
-        <i></i> Gestion de impuestos
+        <i class="bi bi-person-plus"></i> Gestion de impuestos
       </button>
     </div>
 
@@ -18,7 +18,7 @@
     <button class="btn text-light px-4 rounded-pill fw-semibold" 
             style="background-color: #2e77ae; border: none;"
             (click)="Volver()">
-      <i class="bi bi-house-fill"></i> Volver
+      <i class="bi bi-arrow-left"></i> Volver
     </button>
   </div>
 
@@ -31,8 +31,8 @@
   <div class="col-md-3">
     <div class="form-floating shadow-sm">
       <input type="text" class="form-control rounded-3" id="cedulaV" placeholder="Cédula del cliente"
-             [(ngModel)]="cedulaV" required style="height: 58px;" />
-      <label for="cedulaV">Cédula del vendedor</label>
+             [(ngModel)]="cedulaC" required style="height: 58px;" />
+      <label for="cedulaV">Cédula del cliente</label>
     </div>
   </div>
 
@@ -46,41 +46,38 @@
   
   <!-- BOTONES -->
   <div class="d-flex flex-wrap gap-3 justify-content-center mb-5">
-    <button class="btn btn-success px-4" (click)="reporteMensualV()">
+    <button class="btn btn-success px-4" (click)="reporteMensualC()">
         <i class="bi bi-file-earmark-bar-graph-fill"></i>Generar Reporte</button>
   </div>
 
-  <div class="d-flex flex-wrap gap-3 justify-content-center mb-5">
-    <button class="btn btn-danger px-4" (click)="reporteMensualC()">
-        Reportes de Cliente</button>
-  </div>
 
-  <!-- TABLA DE RESULTADOS -->
-  <div class="table-responsive">
-    <table class="table table-bordered table-striped shadow-sm text-center align-middle">
-      <thead class="table-primary">
-        <tr>
-          <th>ID Factura</th>
-          <th>Vendedor</th>
-          <th>Cliente</th>
-          <th>Producto</th>
-          <th>Precio</th>
-          <th>Cantidad</th>
-          <th>Total</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of ReporteDiario">
-          <td class="fw-bold">{{ item.id_factura }}</td>
-          <td>{{ item.nombre_vendedor }}</td>
-          <td>{{ item.nombre_cliente }}</td>
-          <td>{{ item.nombre_producto }}</td>
-          <td>{{ item.precio_compra }}</td>
-          <td>{{ item.cantidad }}</td>
-          <td>{{ item.total }}</td>
-          
-        </tr>
-      </tbody>
-    </table>
-  </div>
+
+    <!-- TABLA DE RESULTADOS -->
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped shadow-sm text-center align-middle">
+          <thead class="table-primary">
+            <tr>
+              <th>ID Factura</th>
+              <th>Vendedor</th>
+              <th>Cliente</th>
+              <th>Producto</th>
+              <th>Precio</th>
+              <th>Cantidad</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of ReporteDiarioC">
+              <td class="fw-bold">{{ item.id_factura }}</td>
+              <td>{{ item.nombre_vendedor }}</td>
+              <td>{{ item.nombre_cliente }}</td>
+              <td>{{ item.nombre_producto }}</td>
+              <td>{{ item.precio_compra }}</td>
+              <td>{{ item.cantidad }}</td>
+              <td>{{ item.total }}</td>
+              
+            </tr>
+          </tbody>
+        </table>
+      </div>
 </div>

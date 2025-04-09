@@ -3,14 +3,7 @@
     height: auto;
 }
 
-.center-button {
-    text-align: center;
-    margin-left: 35%;
-  }
-  h1{
-    text-align: center;
-  }
- 
+
   .logo-container {
     display: flex;
     align-items: center;
@@ -24,4 +17,3 @@
 .btn {
     margin-top: 20px;
   }
-  

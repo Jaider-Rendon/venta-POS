@@ -25,6 +25,9 @@ constructor(private FacturaService: FacturaService,private router: Router) {
     Impuestos() {
       this.router.navigate(['/gestionImpuestos']);
     }
+    Volver() {
+      this.router.navigate(['/ventas-diarias']);
+    }
 
 reporteDiarioC(){
   this.FacturaService.reporteDiarioC(this.cedulaC,this.fecha).subscribe(

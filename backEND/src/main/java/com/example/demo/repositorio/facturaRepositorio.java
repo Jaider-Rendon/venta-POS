@@ -40,4 +40,32 @@ List<Map<String, Object>> findVentasPorDiaV(@Param("cedula") Long cedula, @Param
     nativeQuery = true)
 List<Map<String, Object>> findVentasPorDiaC(@Param("cedula") Long cedula, @Param("fecha") LocalDate fecha);
 
+
+	
+	
+	@Query(value = "SELECT f.id_factura, c.nombre1 AS nombre_cliente, f.cedulac, " +
+            "v.nombre AS nombre_vendedor, v.cedulav, p.nombre AS nombre_producto, " +
+            "d.cantidad, p.precio_compra, f.total " +
+            "FROM factura f " +
+            "JOIN detalle_venta d ON f.id_factura = d.factura_id " +
+            "JOIN producto p ON d.id_producto = p.id_producto " +
+            "JOIN cliente c ON f.cedulac = c.cedulac " +
+            "JOIN vendedor v ON f.cedulav = v.cedulav " +
+            "WHERE f.cedulav = :cedula AND DATE_FORMAT(f.fecha_factura, '%Y-%m') = :fecha",
+    nativeQuery = true)
+	List<Map<String, Object>> findVentasMensualesV(Long cedula, String fecha);
+
+	
+	@Query(value = "SELECT f.id_factura, c.nombre1 AS nombre_cliente, f.cedulac, " +
+            "v.nombre AS nombre_vendedor, v.cedulav, p.nombre AS nombre_producto, " +
+            "d.cantidad, p.precio_compra, f.total " +
+            "FROM factura f " +
+            "JOIN detalle_venta d ON f.id_factura = d.factura_id " +
+            "JOIN producto p ON d.id_producto = p.id_producto " +
+            "JOIN cliente c ON f.cedulac = c.cedulac " +
+            "JOIN vendedor v ON f.cedulav = v.cedulav " +
+            "WHERE f.cedulac = :cedula AND DATE_FORMAT(f.fecha_factura, '%Y-%m') = :fecha",
+    nativeQuery = true)
+	List<Map<String, Object>> findVentasMensualesC(Long cedula, String fecha);
+
 }
