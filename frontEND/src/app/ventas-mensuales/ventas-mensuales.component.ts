@@ -31,14 +31,27 @@ export class VentasMensualesComponent {
     Volver() {
       this.router.navigate(['/Administrador']);
     }
-    reporteMensualV(){
-      this.FacturaService.reporteMensual(this.cedulaV,this.fecha).subscribe(
+    reporteMensualV() {
+      // Validar que la cédula solo contenga números
+      if (!/^\d+$/.test(this.cedulaV?.toString())) {
+        alert('La cédula solo debe contener números.');
+        return;
+      }
+    
+      this.FacturaService.reporteMensual(this.cedulaV, this.fecha).subscribe(
         dato => {
-          this.ReporteDiario=dato;
+          if (dato.length === 0) {
+            alert('No hay ventas registradas en el mes seleccionado.');
+          }
+          this.ReporteDiario = dato;
           console.log(dato);
           this.ReporteDiario.sort((a, b) => a.id_factura - b.id_factura);
-  
+        },
+        error => {
+          console.error('Error al obtener el reporte mensual:', error);
+          alert('Ocurrió un error al consultar el reporte.');
         }
-      )}
+      );
+    }    
     }
 
