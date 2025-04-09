@@ -35,6 +35,7 @@ export class ProductosTipoComponent {
         .subscribe((data: any[]) => {
           this.productos = data;
           console.log(data)
+          this.productos.sort((a, b) => a.id_factura - b.id_factura);
 
           if (this.productos.length === 0) {
             alert('No hay productos para este tipo');
