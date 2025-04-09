@@ -19,55 +19,76 @@
 <!-- Contenido -->
 
 <div class="container my-4">
-    <div class="row justify-content-center">
-      <div class="col-md-6 col-sm-10">
+  <div class="row justify-content-center">
 
-          <h5 class="text-center fw-bold mb-3">Id de producto:</h5>
-          <input type="text"
-                 [(ngModel)]="id"
-                 placeholder="Ingrese ID de producto"
-                 class="form-control text-center mb-3">
-  
-          <button (click)="mostrarProductos()"
-                  class="btn btn-success rounded-pill w-100 fw-semibold">
-             Buscar
+
+      <h4 class="text-center fw-bold mb-4 text-primary">Gestión de Impuestos por Tipo</h4>
+
+      <!-- Fila con los dos campos -->
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">Tipo de producto</label>
+          <input type="text" [(ngModel)]="producto"
+                 placeholder="Ej: lacteos, bebidas, etc."
+                 class="form-control text-center">
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">Nuevo porcentaje de impuesto (%)</label>
+          <input type="number" [(ngModel)]="impuesto"
+                 placeholder="Ej: 19"
+                 class="form-control text-center">
+        </div>
+      </div>
+
+      <!-- Botones -->
+      <div class="row">
+        <div class="col-md-6 d-grid mb-2">
+          <button (click)="mostrarProductos()" class="btn btn-success rounded-pill fw-semibold">
+            Buscar Productos
+          </button>
+        </div>
+        <div class="col-md-6 d-grid mb-2">
+          <button (click)="gestionarImpuesto()" class="btn btn-warning rounded-pill fw-semibold text-dark">
+            Actualizar Impuestos
           </button>
         </div>
       </div>
+
     </div>
-  
-    <!-- Tabla de resultados -->
-    <div class="row justify-content-center mt-4" *ngIf="productos.length > 0">
-      <div class="col-lg-10">
-        <div class="table-responsive">
-          <table class="table table-bordered table-hover text-center align-middle">
-            <thead class="table-primary">
-              <tr>
-                <th>ID de producto</th>
-                <th>Nombre de producto</th>
-                <th>Stock</th>
-                <th>Valor total</th>
-                <th>Impuesto</th>
-                <th>Porcentaje</th>
-                <th>Accion</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let producto of productos">
-                <td>{{ producto.id_producto }}</td>
-                <td>{{ producto.nombre_producto }}</td>
-                <td>{{ producto.cantidad }}</td>
-                <td>{{ producto.precio_compra }}</td>
-                <td>{{ producto.nombre_impuesto }}</td>
-                <td>{{ producto.porcentaje }}%</td>
-                <td> <button type="button" class="btn btn-primary btn-sm d-flex align-items-center gap-1 px-2" 
-                    (click)="gestionarImpuesto(producto.id_producto)">
-                <i class="fas fa-sync-alt"></i> <!-- Ícono de actualizar -->
-                <span>Actualizar</span>
-            </button></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+  </div>
+
+
+
+<!-- Tabla de resultados -->
+<div class="container mt-5" *ngIf="productos.length > 0">
+  <div class="card shadow">
+    <div class="card-header bg-primary text-white text-center fw-bold">
+      Productos encontrados
     </div>
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover text-center align-middle mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Stock</th>
+            <th>Precio</th>
+            <th>Impuesto</th>
+            <th>Porcentaje</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let producto of productos">
+            <td>{{ producto.id_producto }}</td>
+            <td>{{ producto.nombre_producto }}</td>
+            <td>{{ producto.cantidad }}</td>
+            <td>${{ producto.precio_compra.toFixed(2) }}</td>
+            <td>{{ producto.nombre_impuesto }}</td>
+            <td>{{ producto.porcentaje }}%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

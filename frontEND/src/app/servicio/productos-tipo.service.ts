@@ -22,8 +22,13 @@ buscarProductosPorTipo1(tipo: string): Observable<any[]> {
 }
 
 
-buscarProducto(id:number): Observable<ProductoI> {
-  return this.http.get<ProductoI>(`${this.baseUrl}/buscar?id=${id}`);
+buscarProducto(id:string): Observable<ProductoI[]> {
+  return this.http.get<ProductoI[]>(`${this.baseUrl}/buscarC?id=${id}`);
 }
+
+gestionarImpuestos(tipo: string, impuesto: number): Observable<any> {
+  return this.http.get<any>(`${this.baseUrl}/gestionarImpuestos?tipo=${tipo}&nuevoImpuesto=${impuesto}`);
+}
+
 
 }

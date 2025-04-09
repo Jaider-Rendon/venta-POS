@@ -13,7 +13,9 @@ import { ProductoI } from '../entidad/producto-i';
   styleUrl: './gestion-impuestos.component.css'
 })
 export class GestionImpuestosComponent {
-  id: number;
+
+  impuesto:number;
+  producto:string;
   productos: ProductoI[] = [];
   
   constructor(private router: Router, private ProductosTipoService: ProductosTipoService,) {
@@ -24,14 +26,32 @@ export class GestionImpuestosComponent {
         this.router.navigate(['/Administrador']);
     
       }
-      mostrarProductos(){
-        this.ProductosTipoService.buscarProducto(this.id).subscribe(dato => {
+
+      mostrarProductos() {
+        this.ProductosTipoService.buscarProducto(this.producto).subscribe(dato => {
           console.log('Dato recibido:', dato);
-          this.productos = [dato]; // <-- esta es la línea correcta si dato es Producto[]
+          if (dato && dato.length > 0) {
+            this.productos = dato;
+          } else {
+            alert('No se encontró ningún producto con ese ID.');
+            this.productos = [];
+          }
+        }, error => {
+          console.error('Error en la búsqueda:', error);
+          alert('Error al buscar producto.');
         });
       }
-      gestionarImpuesto(id:number){
-        this.mostrarProductos();
+      
+      gestionarImpuesto(){
+        this.ProductosTipoService.gestionarImpuestos(this.producto,this.impuesto).subscribe(dato=>{
+          this.mostrarProductos();
+          if(dato=true){
+alert("Se ha actualizado el impuesto existosamente")
+          }else{
+            alert("Ha ocurrido un error no se pudo actualizar el impuesto")
+          }
+        })
+
       }
 
       
