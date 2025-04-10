@@ -150,33 +150,67 @@ export class VendedorComponent {
     const factura = this.Factura;
     const detalles = this.DetalleVentas;
   
-    // Título
-    doc.setFontSize(18);
-    doc.text('Factura de Venta', 14, 22);
+    const fechaHora = new Date().toLocaleString('es-CO', {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    });
   
-    let y = 32; // Y inicial para los datos
+    // ----------------- ENCABEZADO DE LA TIENDA -----------------
+    doc.setFontSize(16);
+    doc.text('SUPER MARKET', 14, 15);
+    doc.setFontSize(10);
+    doc.text('NIT: 900123456-7', 14, 20);
+    doc.text('Dirección: Calle 123 #45-67, Bogotá, Colombia', 14, 25);
+    doc.text('Resolución DIAN No. 18764000012345 de 2024', 14, 30);
   
-    // Datos generales
+    // Línea separadora
+    doc.setLineWidth(0.3);
+    doc.line(14, 33, 195, 33);
+  
+    // ----------------- DATOS DE LA FACTURA -----------------
+    let y = 40;
     doc.setFontSize(12);
-
-doc.text(`Fecha de Expedición: ${new Date().toLocaleDateString()}`, 14, y);
-y += 8;
-
-doc.text(`Nro Factura: ${factura.idFactura}`, 14, y);
-y += 8;
-
-doc.text(`Vendedor: ${factura.vendedor?.nombre} - Cédula: ${factura.vendedor?.cedulaV}`, 14, y);
-y += 10;
-
-const nombreCliente = `${(factura.cliente?.nombre1 || '')} ${(factura.cliente?.nombre2 || '')} ${(factura.cliente?.apellido1 || '')} ${(factura.cliente?.apellido2 || '')}`.trim();
-doc.text(`Cliente: ${nombreCliente} - Cédula: ${factura.cliente?.cedulaC}`, 14, y);
-y += 8;
-
-doc.text(`Dirección: ${factura.cliente?.direccion} - email: ${factura.cliente?.correo}`, 14, y);
-y += 10;
-
+    doc.text(`FACTURA POS No.: ${factura.idFactura}`, 14, y);
+    y += 8;
   
-    // Tabla de productos
+    doc.setFontSize(10);
+    doc.text(`Fecha y hora de expedición: ${fechaHora}`, 14, y);
+    y += 6;
+  
+    // ----------------- DATOS DEL VENDEDOR -----------------
+    doc.setFontSize(11);
+    doc.text('Datos del Vendedor:', 14, y);
+    y += 6;
+    doc.setFontSize(10);
+    doc.text(`Nombre: ${factura.vendedor?.nombre || ''}`, 14, y);
+    y += 6;
+    doc.text(`Cédula: ${factura.vendedor?.cedulaV || ''}`, 14, y);
+    y += 10;
+  
+    // ----------------- DATOS DEL CLIENTE -----------------
+    doc.setFontSize(11);
+    doc.text('Datos del Cliente:', 14, y);
+    y += 6;
+    doc.setFontSize(10);
+  
+    const nombreCliente = `${factura.cliente?.nombre1 || ''} ${factura.cliente?.nombre2 || ''} ${factura.cliente?.apellido1 || ''} ${factura.cliente?.apellido2 || ''}`.trim();
+    doc.text(`Nombre: ${nombreCliente}`, 14, y);
+    y += 6;
+  
+    doc.text(`Cédula: ${factura.cliente?.cedulaC}`, 14, y);
+    y += 6;
+  
+    doc.text(`Dirección: ${factura.cliente?.direccion}`, 14, y);
+    y += 6;
+  
+    doc.text(`Email: ${factura.cliente?.correo}`, 14, y);
+    y += 10;
+  
+    // ----------------- TABLA DE PRODUCTOS -----------------
     autoTable(doc, {
       startY: y,
       head: [['Producto', 'Cantidad', 'Precio Unitario', 'Subtotal']],
@@ -188,17 +222,17 @@ y += 10;
       ]),
     });
   
-    // Para poder acceder al final de la tabla
     const finalY = (doc as any).lastAutoTable.finalY || y + 10;
   
-    // Total
+    // ----------------- TOTAL -----------------
     const total = detalles.reduce((sum, detalle) => {
       return sum + (detalle.producto?.precioCompra || 0) * (detalle.cantidad || 0);
     }, 0);
   
-    doc.setFontSize(14);
-    doc.text(`Total: $${total.toFixed(2)}`, 14, finalY + 10);
+    doc.setFontSize(12);
+    doc.text(`Total a pagar: $${total.toFixed(2)}`, 14, finalY + 10);
   
+    // ----------------- GUARDAR PDF -----------------
     doc.save('factura.pdf');
   }
   
