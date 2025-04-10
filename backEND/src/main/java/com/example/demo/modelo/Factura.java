@@ -55,7 +55,7 @@ public class Factura {
 	}
 
 	public Factura(Long idFactura, Date fechaFactura, Float total, com.example.demo.modelo.Cliente cliente,
-			Vendedor vendedor, List<detalleVenta> detalles) {
+			Vendedor vendedor, List<DetalleVenta> detalles) {
 		super();
 		this.idFactura = idFactura;
 		this.fechaFactura = fechaFactura;

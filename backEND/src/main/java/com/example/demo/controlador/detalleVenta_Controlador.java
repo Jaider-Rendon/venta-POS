@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.modelo.Factura;
-import com.example.demo.modelo.detalleVenta;
+import com.example.demo.modelo.DetalleVenta;
 import com.example.demo.repositorio.detalleVenta_Repositorio;
 import com.example.demo.repositorio.facturaRepositorio;
 
@@ -22,7 +22,7 @@ public class detalleVenta_Controlador {
 
 	
 	@PostMapping("/guardar")
-    public detalleVenta guardarDetalle(@RequestBody detalleVenta nuevoDetalle) { 
+    public DetalleVenta guardarDetalle(@RequestBody DetalleVenta nuevoDetalle) { 
         return this.repositorio.save(nuevoDetalle);
     }
 }

@@ -11,59 +11,52 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "AsignarImpuesto")
-
-
 public class AsignarImpuesto {
-	 @Id
-	    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	    @Column(name = "idAsg")
-	    private Long idAsg;
-	 
-	 @ManyToOne
-	 @JoinColumn(name = "idImpuesto", referencedColumnName = "idImpuesto")
-	    private  Impuesto Impuesto;
-	 
-	 @ManyToOne
-	 @JoinColumn(name = "idProducto", referencedColumnName = "idProducto")
-	    private  Producto Producto;
 
-	public AsignarImpuesto() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idAsg")
+    private Long idAsg;
 
-	public AsignarImpuesto(Long idAsg, com.example.demo.modelo.Impuesto impuesto,
-			com.example.demo.modelo.Producto producto) {
-		super();
-		this.idAsg = idAsg;
-		Impuesto = impuesto;
-		Producto = producto;
-	}
+    @ManyToOne
+    @JoinColumn(name = "idImpuesto", referencedColumnName = "idImpuesto")
+    private Impuesto impuesto;
 
-	public Long getIdAsg() {
-		return idAsg;
-	}
+    @ManyToOne
+    @JoinColumn(name = "idProducto", referencedColumnName = "idProducto")
+    private Producto producto;
 
-	public void setIdAsg(Long idAsg) {
-		this.idAsg = idAsg;
-	}
+    public AsignarImpuesto() {
+        // Constructor vacío
+    }
 
-	public Impuesto getImpuesto() {
-		return Impuesto;
-	}
+    public AsignarImpuesto(Long idAsg, Impuesto impuesto, Producto producto) {
+        this.idAsg = idAsg;
+        this.impuesto = impuesto;
+        this.producto = producto;
+    }
 
-	public void setImpuesto(Impuesto impuesto) {
-		Impuesto = impuesto;
-	}
+    public Long getIdAsg() {
+        return idAsg;
+    }
 
-	public Producto getProducto() {
-		return Producto;
-	}
+    public void setIdAsg(Long idAsg) {
+        this.idAsg = idAsg;
+    }
 
-	public void setProducto(Producto producto) {
-		Producto = producto;
-	}
-	 
+    public Impuesto getImpuesto() {
+        return impuesto;
+    }
 
+    public void setImpuesto(Impuesto impuesto) {
+        this.impuesto = impuesto;
+    }
 
+    public Producto getProducto() {
+        return producto;
+    }
+
+    public void setProducto(Producto producto) {
+        this.producto = producto;
+    }
 }

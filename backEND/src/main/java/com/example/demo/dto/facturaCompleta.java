@@ -3,12 +3,12 @@ package com.example.demo.dto;
 import java.util.List;
 
 import com.example.demo.modelo.Factura;
-import com.example.demo.modelo.detalleVenta;
+import com.example.demo.modelo.DetalleVenta;
 
 public class facturaCompleta {
 
 	private Factura factura;
-    private List<detalleVenta> detalles;
+    private List<DetalleVenta> detalles;
 
     // Getters y Setters
     public Factura getFactura() {
@@ -19,11 +19,11 @@ public class facturaCompleta {
         this.factura = factura;
     }
 
-    public List<detalleVenta> getDetalles() {
+    public List<DetalleVenta> getDetalles() {
         return detalles;
     }
 
-    public void setDetalles(List<detalleVenta> detalles) {
+    public void setDetalles(List<DetalleVenta> detalles) {
         this.detalles = detalles;
     }
 }

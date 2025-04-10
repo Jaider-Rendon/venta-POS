@@ -2,17 +2,17 @@ package com.example.demo.dto;
 
 import java.util.List;
 import com.example.demo.modelo.Factura;
-import com.example.demo.modelo.detalleVenta;
 
 public class FacturaRespuesta {
     private String mensaje;
     private Factura factura;
-    private List<detalleVenta> detalles;
+    private List<detalleVentaConImpuestos> detalles;
 
-    // Getters y Setters
+    // Getters y setters
     public String getMensaje() {
         return mensaje;
     }
+
     public void setMensaje(String mensaje) {
         this.mensaje = mensaje;
     }
@@ -20,14 +20,16 @@ public class FacturaRespuesta {
     public Factura getFactura() {
         return factura;
     }
+
     public void setFactura(Factura factura) {
         this.factura = factura;
     }
 
-    public List<detalleVenta> getDetalles() {
+    public List<detalleVentaConImpuestos> getDetalles() {
         return detalles;
     }
-    public void setDetalles(List<detalleVenta> detalles) {
+
+    public void setDetalles(List<detalleVentaConImpuestos> detalles) {
         this.detalles = detalles;
     }
 }
