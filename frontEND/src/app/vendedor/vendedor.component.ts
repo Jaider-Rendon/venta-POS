@@ -15,6 +15,7 @@ import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { FacturaRespuesta } from '../entidad/factura-respuesta';
 import { DetalleVentaConImpuestos } from '../entidad/detalle-venta-con-impuestos';
+import { Impuesto } from '../entidad/impuesto';
 
 @Component({
   selector: 'app-vendedor',
@@ -129,82 +130,66 @@ export class VendedorComponent {
 
 
   agregarProducto() {
+    // Validar la cantidad primero
+    if (
+      typeof this.DetalleVenta.cantidad !== 'number' || 
+      !Number.isInteger(this.DetalleVenta.cantidad) ||  
+      this.DetalleVenta.cantidad <= 0
+    ) {
+      alert('⚠️ Ingrese una cantidad válida.');
+      return; 
+    }
+  
+    // Crear el nuevo detalle
     const nuevoDetalle: DetalleVentaConImpuestos = {
       producto: this.DetalleVenta.producto,
       cantidad: this.DetalleVenta.cantidad,
       factura: this.Factura,
       impuestos: [] // puedes llenar esto si ya tienes los impuestos del producto
     };
-
-    this.DetalleVentas.push(nuevoDetalle);
-
-
-  agregarProducto() { 
-    
-    if (
-      typeof this.DetalleVenta.cantidad !== 'number' || 
-      !Number.isInteger(this.DetalleVenta.cantidad) ||  
-      this.DetalleVenta.cantidad <= 0                   
-    ) {
-      alert('⚠️ Ingrese una cantidad válida.');
-      return; 
-    }
   
-    const nuevoDetalle = new DetalleVenta();
-    nuevoDetalle.producto = this.DetalleVenta.producto;
-    nuevoDetalle.cantidad = this.DetalleVenta.cantidad;
-    nuevoDetalle.factura = this.Factura;
-  
+    // Agregar el producto solo si la cantidad es válida
     this.DetalleVentas.push(nuevoDetalle);
   
-    
-
+    // Resetear el detalle temporal
     this.DetalleVenta = new DetalleVenta();
   }
+  
   
 
   crearFacturaCompleta() {
     this.Factura.fechaFactura = new Date();
-
-
-
+  
     const facturaCompleta: FacturaCompleta = {
       factura: this.Factura,
       detalles: this.DetalleVentas
     };
-
-
-
-
+  
     const totalVisual = facturaCompleta.detalles.reduce((sum, d) => {
       return sum + (d.producto?.precioCompra || 0) * (d.cantidad || 0);
     }, 0);
-
-    const resumen = `
-  Factura:
-    Cliente: ${facturaCompleta.factura.cliente?.nombre1} - Cédula: ${facturaCompleta.factura.cliente?.cedulaC}
-    Vendedor: ${facturaCompleta.factura.vendedor?.nombre} - Cédula: ${facturaCompleta.factura.vendedor?.cedulaV}
-    Total: $${totalVisual.toFixed(2)}
-
-  Detalles:
-  ${facturaCompleta.detalles.map((d, i) =>
-      `  ${i + 1}. ${d.producto?.nombre} - Cantidad: ${d.cantidad} - Precio Unitario: $${d.producto?.precioCompra}`
-    ).join('\n')}
-    `;
-
-    alert(resumen);
-
-
   
-    // Primero intentamos guardar
-
+    // 🔥 Primero intentamos guardar la factura
     this.FacturaService.crearFactura(facturaCompleta).subscribe(
       (facturaRespuesta: FacturaRespuesta) => {
+        // ✅ Se guardó correctamente
         this.Factura = facturaRespuesta.factura;
         this.DetalleVentas = facturaRespuesta.detalles;
         this.mostrarBotonDescarga = true;
   
-        // ✅ Ahora sí mostramos el resumen después de guardar
+        // ✅ Ahora sí mostramos el resumen
+        const resumen = `
+  Factura:
+    Cliente: ${facturaRespuesta.factura.cliente?.nombre1} - Cédula: ${facturaRespuesta.factura.cliente?.cedulaC}
+    Vendedor: ${facturaRespuesta.factura.vendedor?.nombre} - Cédula: ${facturaRespuesta.factura.vendedor?.cedulaV}
+    Total: $${totalVisual.toFixed(2)}
+  
+  Detalles:
+  ${facturaRespuesta.detalles.map((d, i) =>
+          `  ${i + 1}. ${d.producto?.nombre} - Cantidad: ${d.cantidad} - Precio Unitario: $${d.producto?.precioCompra}`
+        ).join('\n')}
+        `;
+  
         alert(resumen);
   
         alert(facturaRespuesta.mensaje);
@@ -212,14 +197,16 @@ export class VendedorComponent {
       (error) => {
         console.error('Error al crear la factura:', error);
         alert(error.error);
-       this.DetalleVentas = []; // ✅ Vacía los productos que iban a la factura
-       this.productos = [];     // ✅ Si tienes otra lista visual, también vacíala
-       this.nombrePro = "";     // ✅ Limpia el nombre del producto
-       this.idProducto = 0; 
-
+  
+        // 🧹 Limpiar los datos si falla
+        this.DetalleVentas = [];
+        this.productos = [];
+        this.nombrePro = "";
+        this.idProducto = 0;
       }
     );
   }
+  
 
   generarPDF() {
 
@@ -302,8 +289,7 @@ export class VendedorComponent {
         const nombreProducto = detalle.producto?.nombre || '';
         const cantidad = detalle.cantidad || 0;
         const precioSinIva = detalle.producto?.precioUnitario || 0;
-        const porcentajeTotalIva = detalle.impuestos?.reduce((acc, imp) => acc + (imp.claveporcentaje || 0), 0) || 0;
-        const precioConIva = precioSinIva + (precioSinIva * porcentajeTotalIva / 100);
+        const precioConIva = detalle.producto.precioCompra
         const subtotal = precioConIva * cantidad;
 
 
@@ -351,7 +337,11 @@ export class VendedorComponent {
     doc.setFontSize(12);
     doc.setFont('helvetica', 'bold');
     doc.text(`Total a pagar: $${total.toFixed(2)}`, 14, finalY + 10);
-
+    console.log('PDF generado y guardado con nombre: factura.pdf');
+    console.log('Factura:', factura);
+console.log('Detalles:', detalles);
+console.log('Detalles:',);
     doc.save('factura.pdf');
   }
 }
+
