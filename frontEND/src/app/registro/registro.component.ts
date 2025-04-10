@@ -1,37 +1,68 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Cliente } from '../entidad/cliente';
 import { RegistroService } from '../servicio/registro.service';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-registro',
   standalone: true,
-  imports: [FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './registro.component.html',
-  styleUrl: './registro.component.css'
+  styleUrls: ['./registro.component.css']
 })
-export class RegistroComponent implements OnInit {
-
-  cliente: Cliente=new Cliente();
-  ngOnInit(): void {
-    
-  }
-
-  constructor(private registroService: RegistroService,private router: Router) {}
+export class RegistroComponent {
+  cliente: Cliente = new Cliente();
   
-  guardar(){
-    this.registroService.registroCliente(this.cliente).subscribe(dato => {
-      console.log(dato);
-      if (dato != null) {
-        alert("Empleado Registrado");
-        this.router.navigate(['/Vendedor']);
-      } else {
-        alert("Registro no guardado, faltan datos");
-      }
-    }, error => {
-      alert("Error, faltan datos");
-    });
+
+  constructor(private registroService: RegistroService, private router: Router) {}
+
+  guardar() {
+    if (
+      !this.cliente.cedulaC ||
+      !this.cliente.nombre1 ||
+      !this.cliente.apellido1 ||
+      !this.cliente.telefono ||
+      !this.cliente.direccion ||
+      !this.cliente.correo
+    ) {
+      alert('⚠️ Por favor, complete todos los campos requeridos.');
+      return;
     }
+  
+    const soloNumeros = /^[0-9]+$/;
+    if (!soloNumeros.test(this.cliente.cedulaC.toString())) {
+      alert('⚠️ El número de identificación solo debe contener números.');
+      return;
+    }
+  
+    if (!soloNumeros.test(this.cliente.telefono.toString())) {
+      alert('⚠️ El número de teléfono solo debe contener números.');
+      return;
+    }
+  
+    this.registroService.registroCliente(this.cliente).subscribe(
+      (respuesta) => {
+        alert('✅ Cliente registrado exitosamente');
+        this.router.navigate(['/Vendedor']);
+      },
+      (error) => {
+        console.error('Error al registrar el cliente:', error);
+  
+        const mensaje = error.error?.mensaje || error.message || '';
+  
+        if (error.status === 409 || mensaje.includes('ya existe') || mensaje.includes('identificación ya registrada')) {
+          alert('❌ El cliente ya está registrado.');
+          this.router.navigate(['/Vendedor']);
+        } else {
+          alert('❌ Error al registrar el cliente.');
+        }
+      }
+    );
   }
+  
+  
+}
+
 
