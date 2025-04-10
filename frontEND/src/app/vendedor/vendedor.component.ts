@@ -190,11 +190,9 @@ export class VendedorComponent {
   ${facturaRespuesta.detalles.map((d, i) =>
           `  ${i + 1}. ${d.producto?.nombre} - Cantidad: ${d.cantidad} - Precio Unitario: $${d.producto?.precioCompra}`
         ).join('\n')}
-        `;
-  
-        alert(resumen);
-  
+        `;  
         alert(facturaRespuesta.mensaje);
+        alert(resumen);
       },
       (error) => {
         console.error('Error al crear la factura:', error);
