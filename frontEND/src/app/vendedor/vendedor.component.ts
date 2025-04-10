@@ -65,6 +65,7 @@ export class VendedorComponent {
   
         if (!this.Vendedores.length) {
           alert('⚠️ Vendedor no encontrado.');
+
         }
       },
       error => {
@@ -87,6 +88,7 @@ export class VendedorComponent {
         if (!dato) { 
          
           alert('⚠️ Cliente no encontrado.');
+          this.router.navigate(['/registro'])
           this.clientes = [];
           return;
         }
@@ -148,15 +150,14 @@ export class VendedorComponent {
   
 
   crearFacturaCompleta() {
-  
     this.Factura.fechaFactura = new Date();
-    
+  
     const facturaCompleta: FacturaCompleta = {
       factura: this.Factura,
       detalles: this.DetalleVentas
     };
   
-    // Crear un resumen visual para el alert
+    // Crear el resumen visual (pero no mostrarlo aún)
     const totalVisual = facturaCompleta.detalles.reduce((sum, d) => {
       return sum + (d.producto?.precioCompra || 0) * (d.cantidad || 0);
     }, 0);
@@ -173,18 +174,26 @@ export class VendedorComponent {
   ).join('\n')}
     `;
   
-    alert(resumen);
-  
-    // Ahora sí enviamos la factura al backend
+    // Primero intentamos guardar
     this.FacturaService.crearFactura(facturaCompleta).subscribe(
       (facturaRespuesta: FacturaRespuesta) => {
         this.Factura = facturaRespuesta.factura;
         this.DetalleVentas = facturaRespuesta.detalles;
         this.mostrarBotonDescarga = true;
+  
+        // ✅ Ahora sí mostramos el resumen después de guardar
+        alert(resumen);
+  
         alert(facturaRespuesta.mensaje);
       },
       (error) => {
         console.error('Error al crear la factura:', error);
+        alert(error.error);
+       this.DetalleVentas = []; // ✅ Vacía los productos que iban a la factura
+       this.productos = [];     // ✅ Si tienes otra lista visual, también vacíala
+       this.nombrePro = "";     // ✅ Limpia el nombre del producto
+       this.idProducto = 0; 
+
       }
     );
   }
