@@ -16,11 +16,24 @@ export class VentasMensualesCComponent {
   cedulaC: number;
   fecha:string;
   ReporteDiarioC:ReporteDiarioC[] = [];
+  paginaActual: number = 1;
+  elementosPorPagina: number = 15;
 
   constructor(private router: Router,private FacturaService: FacturaService) {
     
       
         }
+
+        get totalPaginas(): number {
+          return Math.ceil(this.ReporteDiarioC.length / this.elementosPorPagina);
+        }
+        
+        get reportePaginado(): ReporteDiarioC[] {
+          const inicio = (this.paginaActual - 1) * this.elementosPorPagina;
+          const fin = inicio + this.elementosPorPagina;
+          return this.ReporteDiarioC.slice(inicio, fin);
+        }
+
   Impuestos() {
     this.router.navigate(['/gestionImpuestos']);
         }

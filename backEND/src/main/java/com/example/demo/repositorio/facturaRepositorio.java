@@ -77,7 +77,7 @@ List<Map<String, Object>> findVentasPorDiaC(@Param("cedula") Long cedula, @Param
 	        "JOIN cliente c ON f.cedulac = c.cedulac " +
 	        "JOIN vendedor v ON f.cedulav = v.cedulav " +
 	        "WHERE DATE(f.fecha_factura) BETWEEN :fechaInicio AND :fechaFin " +
-	        "ORDER BY f.fecha_factura DESC",
+	        "ORDER BY f.fecha_factura ASC",
 	        nativeQuery = true)
 	List<Map<String, Object>> findVentasEntreFechas(@Param("fechaInicio") LocalDate inicio, @Param("fechaFin") LocalDate fin);
 }

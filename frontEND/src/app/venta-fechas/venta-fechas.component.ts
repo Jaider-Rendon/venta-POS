@@ -18,12 +18,24 @@ export class VentaFechasComponent {
   ReporteDiario:ReporteDiarioC[] = [];
   fechaInicio!: string;
   fechaFin!: string;
-
+  paginaActual: number = 1;
+  elementosPorPagina: number = 15;
+  
     constructor(private router: Router,private FacturaService: FacturaService) {
   
     
       }
     
+      get totalPaginas(): number {
+        return Math.ceil(this.ReporteDiario.length / this.elementosPorPagina);
+      }
+      
+      get reportePaginado(): ReporteDiarioC[] {
+        const inicio = (this.paginaActual - 1) * this.elementosPorPagina;
+        const fin = inicio + this.elementosPorPagina;
+        return this.ReporteDiario.slice(inicio, fin);
+      }
+
     Impuestos() {
       this.router.navigate(['/gestionImpuestos']);
     }

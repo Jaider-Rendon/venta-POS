@@ -1,10 +1,12 @@
 import { ProductosTipoService } from './../servicio/productos-tipo.service';
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common'; // Para *ngIf y *ngFor
-import { FormsModule } from '@angular/forms';   // Para [(ngModel)]
+  // Para [(ngModel)]
 
-import { Router } from '@angular/router';
+
 import { log } from 'console';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-productos-tipo',

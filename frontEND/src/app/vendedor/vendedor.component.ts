@@ -6,8 +6,7 @@ import { Factura } from './../entidad/factura';
 
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+
 import { LoginVendedorService } from '../servicio/login-vendedor.service';
 import { Cliente } from '../entidad/cliente';
 import { Producto } from '../entidad/producto';
@@ -16,6 +15,8 @@ import autoTable from 'jspdf-autotable';
 import { FacturaRespuesta } from '../entidad/factura-respuesta';
 import { DetalleVentaConImpuestos } from '../entidad/detalle-venta-con-impuestos';
 import { Impuesto } from '../entidad/impuesto';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-vendedor',
@@ -102,6 +103,7 @@ export class VendedorComponent {
           this.clientes = [];
         } else {
           console.log("Cliente encontrado:", this.clientes);
+          alert(JSON.stringify(dato, null, 2));
         }
       },
       error => {
