@@ -52,30 +52,64 @@ export class VendedorComponent {
   }
 
   vendedor() {
+    
+    if (!/^\d+$/.test(this.cedulaV.toString())) {
+      alert('⚠️ Solo se permiten números en la cédula del vendedor.');
+      return; 
+    }
+  
     this.vendedorService.buscar(this.cedulaV).subscribe(
       dato => {
         this.Vendedores = Array.isArray(dato) ? dato : [dato];
         console.log("Vendedor encontrado:", this.Vendedores);
+  
+        if (!this.Vendedores.length) {
+          alert('⚠️ Vendedor no encontrado.');
+        }
       },
       error => {
-        console.error('Error al obtener el vendedor', error);
+        console.error('Error al obtener el vendedor:', error);
+        alert('❌ Error al obtener el vendedor.');
         this.Vendedores = [];
       }
     );
   }
-
+  
   cliente() {
+    
+    if (!/^\d+$/.test(this.CedulaC.toString())) {
+      alert('⚠️ Solo se permiten números en la cédula del cliente.');
+      return;
+    }
+  
     this.vendedorService.buscar1(this.CedulaC).subscribe(
       dato => {
+        if (!dato) { 
+         
+          alert('⚠️ Cliente no encontrado.');
+          this.clientes = [];
+          return;
+        }
+  
         this.clientes = Array.isArray(dato) ? dato : [dato];
-        console.log("Cliente encontrado:", this.clientes);
+  
+        if (this.clientes.length === 0 || !this.clientes[0]) {
+          alert('⚠️ Cliente no encontrado.');
+          this.clientes = [];
+        } else {
+          console.log("Cliente encontrado:", this.clientes);
+        }
       },
       error => {
-        console.error("Error al obtener el cliente", error);
+        console.error('Error al obtener el cliente:', error);
+        alert('❌ Error al obtener el cliente.');
         this.clientes = [];
       }
     );
   }
+  
+  
+  
 
   buscarProducto() {
     this.FacturaService.buscarProducto(this.idProducto,this.nombrePro).subscribe(
@@ -90,20 +124,31 @@ export class VendedorComponent {
     );
   }
 
-  agregarProducto() {
+  agregarProducto() { 
+    
+    if (
+      typeof this.DetalleVenta.cantidad !== 'number' || 
+      !Number.isInteger(this.DetalleVenta.cantidad) ||  
+      this.DetalleVenta.cantidad <= 0                   
+    ) {
+      alert('⚠️ Ingrese una cantidad válida.');
+      return; 
+    }
+  
     const nuevoDetalle = new DetalleVenta();
     nuevoDetalle.producto = this.DetalleVenta.producto;
     nuevoDetalle.cantidad = this.DetalleVenta.cantidad;
     nuevoDetalle.factura = this.Factura;
-
+  
     this.DetalleVentas.push(nuevoDetalle);
-
-    // Limpiar campos después de agregar
+  
+    
     this.DetalleVenta = new DetalleVenta();
   }
+  
 
   crearFacturaCompleta() {
-    // Asignar la fecha actual
+  
     this.Factura.fechaFactura = new Date();
     
     const facturaCompleta: FacturaCompleta = {
