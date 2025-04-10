@@ -2,8 +2,6 @@ package com.example.demo.controlador;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -20,10 +18,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.FacturaRespuesta;
+import com.example.demo.dto.detalleVentaConImpuestos;
 import com.example.demo.dto.facturaCompleta;
+import com.example.demo.modelo.AsignarImpuesto;
 import com.example.demo.modelo.Factura;
+import com.example.demo.modelo.Impuesto;
 import com.example.demo.modelo.Producto;
-import com.example.demo.modelo.detalleVenta;
+import com.example.demo.modelo.DetalleVenta;
+import com.example.demo.repositorio.asignarImpuestoRepositorio;
 import com.example.demo.repositorio.detalleVenta_Repositorio;
 import com.example.demo.repositorio.facturaRepositorio;
 import com.example.demo.repositorio.productoRepositorio;
@@ -41,26 +43,32 @@ public class facturaControlador {
 
     @Autowired 
     private productoRepositorio repositorioP;
+    
+    @Autowired
+    private asignarImpuestoRepositorio repositorioI;
+
 
     @PostMapping("/guardar")
     public ResponseEntity<?> guardarFacturaCompleta(@RequestBody facturaCompleta dto) {
         try {
             float total = 0f;
-            List<detalleVenta> detalles = new ArrayList<>();
+            List<DetalleVenta> detalles = new ArrayList<>();
+            List<detalleVentaConImpuestos> detallesConImpuestos = new ArrayList<>();
 
-            // 1. Calcular el total y construir los detalles
-            for (detalleVenta detalleDTO : dto.getDetalles()) {
+            for (DetalleVenta detalleDTO : dto.getDetalles()) {
                 Producto producto = detalleDTO.getProducto();
 
                 if (producto.getStock() < detalleDTO.getCantidad()) {
                     return ResponseEntity.badRequest().body("Stock insuficiente para el producto: " + producto.getNombre() + " Actualmente hay " + producto.getStock());
                 }
 
+                // Restar stock
                 long nuevoStock = producto.getStock() - detalleDTO.getCantidad();
                 producto.setStock(nuevoStock);
                 repositorioP.save(producto);
 
-                detalleVenta detalle = new detalleVenta();
+                // Crear detalleVenta
+                DetalleVenta detalle = new DetalleVenta();
                 detalle.setProducto(producto);
                 detalle.setCantidad(detalleDTO.getCantidad());
 
@@ -68,24 +76,37 @@ public class facturaControlador {
                 total += subtotal;
 
                 detalles.add(detalle);
+
+                // Obtener los impuestos asociados a este producto
+                List<AsignarImpuesto> asignaciones = repositorioI.findByProducto(producto);
+                List<Impuesto> impuestos = asignaciones.stream()
+                                                       .map(AsignarImpuesto::getImpuesto)
+                                                       .toList();
+
+                // Crear DTO con impuestos
+                detalleVentaConImpuestos detalleConImpuesto = new detalleVentaConImpuestos();
+                detalleConImpuesto.setProducto(producto);
+                detalleConImpuesto.setCantidad(detalleDTO.getCantidad());
+                detalleConImpuesto.setImpuestos(impuestos);
+
+                detallesConImpuestos.add(detalleConImpuesto);
             }
 
-            // 2. Crear factura con el total
+            // Crear y guardar la factura
             Factura factura = dto.getFactura();
             factura.setTotal(total);
-            factura = repositorio.save(factura); // Aquí se genera el idFactura
+            factura = repositorio.save(factura);
 
-            // 3. Asociar factura a los detalles y guardar
-            for (detalleVenta detalle : detalles) {
+            for (DetalleVenta detalle : detalles) {
                 detalle.setFactura(factura);
             }
             repositorioD.saveAll(detalles);
 
-            // 4. Retornar la factura con su ID y los detalles
+            // Armar respuesta
             FacturaRespuesta respuesta = new FacturaRespuesta();
             respuesta.setMensaje("Factura guardada exitosamente");
             respuesta.setFactura(factura);
-            respuesta.setDetalles(detalles);
+            respuesta.setDetalles(detallesConImpuestos);
 
             return ResponseEntity.ok(respuesta);
 
@@ -94,6 +115,7 @@ public class facturaControlador {
                     .body("Error al guardar la factura: " + e.getMessage());
         }
     }
+
 
     @GetMapping("/buscar")
     public Optional<Factura> obtenerDetallesPorFactura(@RequestParam Long idF) {  
