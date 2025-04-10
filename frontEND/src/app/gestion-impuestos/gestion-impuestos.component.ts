@@ -28,31 +28,54 @@ export class GestionImpuestosComponent {
       }
 
       mostrarProductos() {
-        this.ProductosTipoService.buscarProducto(this.producto).subscribe(dato => {
-          console.log('Dato recibido:', dato);
-          if (dato && dato.length > 0) {
-            this.productos = dato;
-          } else {
-            alert('No se encontró ningún producto con ese ID.');
-            this.productos = [];
+        // Validar si el tipo de producto tiene solo letras
+        if (!/^[a-zA-Z\s]+$/.test(this.producto)) {
+          alert('El tipo del producto debe contener solo letras.');
+          return;
+        }
+    
+        this.ProductosTipoService.buscarProducto(this.producto).subscribe(
+          dato => {
+            console.log('Dato recibido:', dato);
+            if (dato && dato.length > 0) {
+              this.productos = dato;
+            } else {
+              alert('Producto no encontrado.');
+              this.productos = [];
+            }
+          },
+          error => {
+            console.error('Error en la búsqueda:', error);
+            alert('Error al buscar producto.');
           }
-        }, error => {
-          console.error('Error en la búsqueda:', error);
-          alert('Error al buscar producto.');
+        );
+      }
+      
+      gestionarImpuesto() {
+        // Validar si hay cambios
+        if (!this.producto || this.impuesto == null) {
+          alert("No se han realizado cambios");
+          return;
+        }
+      
+        // Validar rango del impuesto
+        if (this.impuesto < 0 || this.impuesto > 100) {
+          alert("Ingrese un número entre 0% y 100%");
+          return;
+        }
+      
+        // Actualizar
+        this.ProductosTipoService.gestionarImpuestos(this.producto, this.impuesto).subscribe(dato => {
+          this.mostrarProductos();
+          if (dato === true) {
+            alert("Se ha actualizado el impuesto exitosamente");
+          } else {
+            alert("Ha ocurrido un error, no se pudo actualizar el impuesto");
+          }
         });
       }
       
-      gestionarImpuesto(){
-        this.ProductosTipoService.gestionarImpuestos(this.producto,this.impuesto).subscribe(dato=>{
-          this.mostrarProductos();
-          if(dato=true){
-alert("Se ha actualizado el impuesto existosamente")
-          }else{
-            alert("Ha ocurrido un error no se pudo actualizar el impuesto")
-          }
-        })
-
-      }
+      
 
       
 }

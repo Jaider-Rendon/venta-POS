@@ -73,9 +73,6 @@ public class productoControlador {
                 resultado.add(productoInfo);
             }
         }
-
-        System.out.println("Resultados encontrados: " + resultado.size());
-
         return resultado;
     }
 
