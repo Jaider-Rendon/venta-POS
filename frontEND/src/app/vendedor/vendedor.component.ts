@@ -182,7 +182,8 @@ export class VendedorComponent {
         // ✅ Ahora sí mostramos el resumen
         const resumen = `
   Factura:
-    Cliente: ${facturaRespuesta.factura.cliente?.nombre1} - Cédula: ${facturaRespuesta.factura.cliente?.cedulaC}
+    Cliente: ${facturaRespuesta.factura.cliente?.nombre1} ${facturaRespuesta.factura.cliente?.nombre2} ${facturaRespuesta.factura.cliente?.apellido1} ${facturaRespuesta.factura.cliente?.apellido2} - Cédula: ${facturaRespuesta.factura.cliente?.cedulaC}
+
     Vendedor: ${facturaRespuesta.factura.vendedor?.nombre} - Cédula: ${facturaRespuesta.factura.vendedor?.cedulaV}
     Total: $${totalVisual.toFixed(2)}
   

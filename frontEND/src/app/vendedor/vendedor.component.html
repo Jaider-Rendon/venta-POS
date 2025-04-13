@@ -52,7 +52,8 @@
         <div class="form-floating">
           <select class="form-select shadow-sm" id="cliente" [(ngModel)]="Factura.cliente">
             <option *ngFor="let cliente of clientes" [ngValue]="cliente">
-              {{ cliente.nombre1 }} - {{ cliente.cedulaC }}
+              {{ cliente.nombre1 }} {{ cliente.nombre2 }} {{ cliente.apellido1 }} {{ cliente.apellido2 }} - {{ cliente.cedulaC }}
+
             </option>
           </select>
           <label for="cliente">Seleccione cliente</label>
