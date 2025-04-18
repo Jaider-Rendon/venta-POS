@@ -79,7 +79,8 @@ public class facturaControlador {
         	    Date fecha = Date.from(hoy.atStartOfDay(ZoneId.systemDefault()).toInstant());
         	    java.sql.Date sqlFecha = new java.sql.Date(fecha.getTime());
         	    int cantidad = detalleDTO.getCantidad().intValue();
-        	    PuntoVenta pv = new PuntoVenta (sqlFecha,cantidad);
+        	    Long idP = producto.getIdProducto();
+        	    PuntoVenta pv = new PuntoVenta (sqlFecha,cantidad,idP);
         	    repositoriopv.save(pv);
 
                 // Crear detalleVenta

@@ -26,16 +26,20 @@ public class PuntoVenta {
 
 	    @Column(name = "cantidadVendido")
 	    private int cantidadVendido;
-
+	    
+	    @Column (name="idProducto")
+	    private Long idProducto;
+	    
 		public PuntoVenta() {
 			super();
 			// TODO Auto-generated constructor stub
 		}
 
-		public PuntoVenta(Date fechaVenta,  int cantidadVendido) {
+		public PuntoVenta(Date fechaVenta,  int cantidadVendido, Long idProducto) {
 			super();
 			this.fechaVenta = fechaVenta;
 			this.cantidadVendido = cantidadVendido;
+			this.idProducto = idProducto;
 		}
 
 		public Long getIdPos() {
