@@ -1,7 +1,9 @@
 package com.example.demo.controlador;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -24,7 +26,9 @@ import com.example.demo.modelo.AsignarImpuesto;
 import com.example.demo.modelo.Factura;
 import com.example.demo.modelo.Impuesto;
 import com.example.demo.modelo.Producto;
+import com.example.demo.modelo.PuntoVenta;
 import com.example.demo.modelo.DetalleVenta;
+import com.example.demo.repositorio.PuntoVentaRepositorio;
 import com.example.demo.repositorio.asignarImpuestoRepositorio;
 import com.example.demo.repositorio.detalleVenta_Repositorio;
 import com.example.demo.repositorio.facturaRepositorio;
@@ -46,6 +50,9 @@ public class facturaControlador {
     
     @Autowired
     private asignarImpuestoRepositorio repositorioI;
+    
+    @Autowired
+    private PuntoVentaRepositorio repositoriopv;
 
 
     @PostMapping("/guardar")
@@ -66,6 +73,14 @@ public class facturaControlador {
                 long nuevoStock = producto.getStock() - detalleDTO.getCantidad();
                 producto.setStock(nuevoStock);
                 repositorioP.save(producto);
+                
+                //Crear PuntoVenta
+                LocalDate hoy = LocalDate.now();
+        	    Date fecha = Date.from(hoy.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        	    java.sql.Date sqlFecha = new java.sql.Date(fecha.getTime());
+        	    int cantidad = detalleDTO.getCantidad().intValue();
+        	    PuntoVenta pv = new PuntoVenta (sqlFecha,cantidad);
+        	    repositoriopv.save(pv);
 
                 // Crear detalleVenta
                 DetalleVenta detalle = new DetalleVenta();
