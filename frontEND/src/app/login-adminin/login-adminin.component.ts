@@ -40,14 +40,14 @@ export class LoginAdmininComponent implements OnInit {
     // Validar que el usuario (cédula) sea solo números
     const soloNumeros = /^[0-9]+$/;
     if (!soloNumeros.test(usuario)) {
-      alert('El campo de cédula solo debe contener números.');
+      alert('La cédula  debe ser una cadena de números.');
       return;
     }
   
     // Validar que la contraseña no tenga caracteres inválidos
     const caracteresValidos = /^[A-Za-z0-9@#%&¡!$*_\-]+$/;
     if (!caracteresValidos.test(clavead)) {
-      alert('La contraseña contiene caracteres inválidos.');
+      alert('Formato de contraseña inválido.');
       return;
     }
   
@@ -60,6 +60,9 @@ export class LoginAdmininComponent implements OnInit {
       } else {
         alert("credenciales invalidas"); 
       }
+    },error => {
+      console.error('Error al intentar iniciar sesión:', error);
+      alert('La contraseña contiene caracteres inválidos.');
     });
   }
   

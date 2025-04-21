@@ -27,7 +27,7 @@ export class RegistroComponent {
       !this.cliente.direccion ||
       !this.cliente.correo
     ) {
-      alert('⚠️ Por favor, complete todos los campos requeridos.');
+      alert('⚠️ Por favor, complete todos los campos obligatorios.');
       return;
     }
   
@@ -38,13 +38,13 @@ export class RegistroComponent {
     }
   
     if (!soloNumeros.test(this.cliente.telefono.toString())) {
-      alert('⚠️ El número de teléfono solo debe contener números.');
+      alert('⚠️ El teléfono debe contener solo números.');
       return;
     }
   
     this.registroService.registroCliente(this.cliente).subscribe(
       (respuesta) => {
-        alert('✅ Cliente registrado exitosamente');
+        alert('✅ Cliente registrado correctamente');
         this.router.navigate(['/Vendedor']);
       },
       (error) => {
@@ -53,7 +53,7 @@ export class RegistroComponent {
         const mensaje = error.error?.mensaje || error.message || '';
   
         if (error.status === 409 || mensaje.includes('ya existe') || mensaje.includes('identificación ya registrada')) {
-          alert('❌ El cliente ya está registrado.');
+          alert('❌ Este cliente ya existe en el sistema.');
           this.router.navigate(['/Vendedor']);
         } else {
           alert('❌ Error al registrar el cliente.');

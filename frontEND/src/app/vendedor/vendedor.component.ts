@@ -57,7 +57,7 @@ export class VendedorComponent {
   vendedor() {
     
     if (!/^\d+$/.test(this.cedulaV.toString())) {
-      alert('⚠️ Solo se permiten números en la cédula del vendedor.');
+      alert('⚠️ La cédula debe contener solo números.');
       return; 
     }
   
@@ -82,7 +82,7 @@ export class VendedorComponent {
   cliente() {
     
     if (!/^\d+$/.test(this.CedulaC.toString())) {
-      alert('⚠️ Solo se permiten números en la cédula del cliente.');
+      alert('⚠️ El ID del cliente debe contener solo números.');
       return;
     }
   
@@ -118,6 +118,10 @@ export class VendedorComponent {
   
 
   buscarProducto() {
+    if (!/^\d+$/.test(this.idProducto.toString())) {
+      alert('⚠️ El ID del producto debe contener solo números.');
+      return;
+    }
     this.FacturaService.buscarProducto(this.idProducto, this.nombrePro).subscribe(
       dato => {
         this.productos = Array.isArray(dato) ? dato : [dato];

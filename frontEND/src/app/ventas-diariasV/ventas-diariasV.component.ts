@@ -62,7 +62,7 @@ export class VentasDiariasComponent {
         console.log(dato);
   
         if (this.ReporteDiario.length === 0) {
-          alert('No se encontraron ventas para la fecha seleccionada.');
+          alert('No hay ventas registradas en este día.');
           return;
         }
   

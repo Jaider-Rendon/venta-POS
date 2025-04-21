@@ -51,7 +51,7 @@ export class VentasMensualesCComponent {
           this.FacturaService.reporteMensualC(this.cedulaC, this.fecha).subscribe(
             dato => {
               if (dato.length === 0) {
-                alert('No hay ventas registradas en el mes seleccionado.');
+                alert('No hay compras registradas en este mes.');
               }
               this.ReporteDiarioC = dato;
               console.log(dato);
