@@ -39,7 +39,7 @@ validarLoginAd() {
   // Validar que usuario (cédula) solo tenga números
   const cedulaRegex = /^[0-9]+$/;
   if (!cedulaRegex.test(usuario)) {
-    alert('La cédula solo debe contener números.');
+    alert('La cédula  debe ser una cadena de números.');
     return;
   }
 
@@ -63,7 +63,7 @@ validarLoginAd() {
     },
     error => {
       console.error('Error al intentar iniciar sesión:', error);
-      alert('Error en el servidor. Inténtalo más tarde.');
+      alert('La contraseña contiene caracteres inválidos.');
     }
   );
 }

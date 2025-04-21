@@ -59,7 +59,7 @@ get reportePaginado(): ReporteDiarioC[] {
     this.FacturaService.reporteDiarioC(this.cedulaC, this.fecha).subscribe(
       dato => {
         if (dato.length === 0) {
-          alert('No se encontraron ventas para la fecha seleccionada.');
+          alert('No hay compras registradas en este día.');
           this.ReporteDiarioC = [];
         } else {
           this.ReporteDiarioC = dato;

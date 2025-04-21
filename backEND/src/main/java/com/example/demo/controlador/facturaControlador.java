@@ -66,7 +66,7 @@ public class facturaControlador {
                 Producto producto = detalleDTO.getProducto();
 
                 if (producto.getStock() < detalleDTO.getCantidad()) {
-                    return ResponseEntity.badRequest().body("Stock insuficiente para el producto: " + producto.getNombre() + " Actualmente hay " + producto.getStock()+" Quieres comprar los disponibles?");
+                    return ResponseEntity.badRequest().body("Stock insuficiente para el producto: " + producto.getNombre() + " Actualmente hay " + producto.getStock()+" ");
                 }
 
                 // Restar stock

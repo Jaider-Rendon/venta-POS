@@ -58,7 +58,7 @@ export class VentaFechasComponent {
     
         this.FacturaService.reporteEntreFechas(inicio, fin).subscribe(data => {
           if (data.length === 0) {
-            alert("No hay reporte de ventas en las fechas seleccionadas");
+            alert("No hay ventas registradas en este periodo.");
             this.ReporteDiario = []; // limpiar el arreglo si es necesario
           } else {
             this.ReporteDiario = data;

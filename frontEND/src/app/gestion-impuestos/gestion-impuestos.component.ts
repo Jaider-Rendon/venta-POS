@@ -68,7 +68,7 @@ export class GestionImpuestosComponent {
         this.ProductosTipoService.gestionarImpuestos(this.producto, this.impuesto).subscribe(dato => {
           this.mostrarProductos();
           if (dato === true) {
-            alert("Se ha actualizado el impuesto exitosamente");
+            alert("Impuestos actualizados correctamente.");
           } else {
             alert("Ha ocurrido un error, no se pudo actualizar el impuesto");
           }
