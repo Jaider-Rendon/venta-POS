@@ -165,7 +165,6 @@ export class VendedorComponent {
 
   crearFacturaCompleta() {
     this.Factura.fechaFactura = new Date();
-  
     const facturaCompleta: FacturaCompleta = {
       factura: this.Factura,
       detalles: this.DetalleVentas
@@ -200,18 +199,28 @@ export class VendedorComponent {
         alert(resumen);
       },
       (error) => {
-        console.error('Error al crear la factura:', error);
-        alert(error.error);
-  
-        // 🧹 Limpiar los datos si falla
-        this.DetalleVentas = [];
-        this.productos = [];
+        // ⚠️ Si hay productos sin stock, los mostramos
+        const productosSinStock = error?.error?.productosSinStock;
+      
+        if (Array.isArray(productosSinStock)) {
+          productosSinStock.forEach((p: any) => {
+            const index = this.DetalleVentas.findIndex(d => d.producto?.idProducto === p.id);
+            if (index !== -1) {
+              const eliminado = this.DetalleVentas[index];
+              this.DetalleVentas.splice(index, 1);
+              alert(`Stock insuficiente para el producto: ${eliminado.producto?.nombre} Actualmente hay ${p.cantidad}`);
+            }
+          });
+        }
+      
         this.nombrePro = "";
         this.idProducto = 0;
+        console.log("🔎 error completo:", error);
+console.log("🔎 error.error:", error.error);
       }
+      
     );
   }
-  
 
   generarPDF() {
 

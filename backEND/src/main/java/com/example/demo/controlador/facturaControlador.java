@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -54,61 +55,67 @@ public class facturaControlador {
     @Autowired
     private PuntoVentaRepositorio repositoriopv;
 
-
     @PostMapping("/guardar")
     public ResponseEntity<?> guardarFacturaCompleta(@RequestBody facturaCompleta dto) {
         try {
             float total = 0f;
             List<DetalleVenta> detalles = new ArrayList<>();
             List<detalleVentaConImpuestos> detallesConImpuestos = new ArrayList<>();
+            List<Map<String, Object>> productosSinStock = new ArrayList<>(); // Aquí guardaremos los errores
 
             for (DetalleVenta detalleDTO : dto.getDetalles()) {
                 Producto producto = detalleDTO.getProducto();
 
                 if (producto.getStock() < detalleDTO.getCantidad()) {
-                    return ResponseEntity.badRequest().body("Stock insuficiente para el producto: " + producto.getNombre() + " Actualmente hay " + producto.getStock()+" ");
+                    // Guardamos solo los que tienen problema
+                    Map<String, Object> productoError = new HashMap<>();
+                    productoError.put("id", producto.getIdProducto());
+                    productoError.put("nombre", producto.getNombre());
+                    productoError.put("cantidad", producto.getStock());
+                    productosSinStock.add(productoError);
+                    continue;
                 }
 
                 // Restar stock
                 long nuevoStock = producto.getStock() - detalleDTO.getCantidad();
                 producto.setStock(nuevoStock);
                 repositorioP.save(producto);
-                
-                //Crear PuntoVenta
-                LocalDate hoy = LocalDate.now();
-        	    Date fecha = Date.from(hoy.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        	    java.sql.Date sqlFecha = new java.sql.Date(fecha.getTime());
-        	    int cantidad = detalleDTO.getCantidad().intValue();
-        	    Long idP = producto.getIdProducto();
-        	    PuntoVenta pv = new PuntoVenta (sqlFecha,cantidad,idP);
-        	    repositoriopv.save(pv);
 
-                // Crear detalleVenta
+                // Punto de venta
+                LocalDate hoy = LocalDate.now();
+                Date fecha = Date.from(hoy.atStartOfDay(ZoneId.systemDefault()).toInstant());
+                java.sql.Date sqlFecha = new java.sql.Date(fecha.getTime());
+                int cantidad = detalleDTO.getCantidad().intValue();
+                Long idP = producto.getIdProducto();
+                PuntoVenta pv = new PuntoVenta(sqlFecha, cantidad, idP);
+                repositoriopv.save(pv);
+
+                // DetalleVenta
                 DetalleVenta detalle = new DetalleVenta();
                 detalle.setProducto(producto);
                 detalle.setCantidad(detalleDTO.getCantidad());
-
-                float subtotal = producto.getPrecioCompra() * detalleDTO.getCantidad();
-                total += subtotal;
-
+                total += producto.getPrecioCompra() * detalleDTO.getCantidad();
                 detalles.add(detalle);
 
-                // Obtener los impuestos asociados a este producto
+                // Impuestos
                 List<AsignarImpuesto> asignaciones = repositorioI.findByProducto(producto);
-                List<Impuesto> impuestos = asignaciones.stream()
-                                                       .map(AsignarImpuesto::getImpuesto)
-                                                       .toList();
+                List<Impuesto> impuestos = asignaciones.stream().map(AsignarImpuesto::getImpuesto).toList();
 
-                // Crear DTO con impuestos
                 detalleVentaConImpuestos detalleConImpuesto = new detalleVentaConImpuestos();
                 detalleConImpuesto.setProducto(producto);
                 detalleConImpuesto.setCantidad(detalleDTO.getCantidad());
                 detalleConImpuesto.setImpuestos(impuestos);
-
                 detallesConImpuestos.add(detalleConImpuesto);
             }
 
-            // Crear y guardar la factura
+            // Si hay errores de stock, se devuelven aquí
+            if (!productosSinStock.isEmpty()) {
+                Map<String, Object> error = new HashMap<>();
+                error.put("productosSinStock", productosSinStock);
+                return ResponseEntity.badRequest().body(error);
+            }
+
+            // Guardar factura
             Factura factura = dto.getFactura();
             factura.setTotal(total);
             factura = repositorio.save(factura);
@@ -118,7 +125,6 @@ public class facturaControlador {
             }
             repositorioD.saveAll(detalles);
 
-            // Armar respuesta
             FacturaRespuesta respuesta = new FacturaRespuesta();
             respuesta.setMensaje("Factura guardada exitosamente");
             respuesta.setFactura(factura);
